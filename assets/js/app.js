@@ -25,6 +25,18 @@ const CONFIG = {
   whatsapp: "573203778133",              // ← TU NÚMERO DE WHATSAPP (Colombia +57)
   website:  "",                           // ← Ej. "https://arix-digital.com" (opcional)
   email:    "arixdigitalsystems@gmail.com", // ← Correo de contacto de ARIX
+
+  /* EmailJS (opcional) — envía correos desde la página y autoresponde al visitante.
+     Cómo obtener estos valores: crea cuenta gratis en https://www.emailjs.com,
+     conecta tu Gmail (Email Services) y crea 2 plantillas (Email Templates).
+     Mientras estén vacíos, el formulario usa Netlify Forms como respaldo. */
+  emailjs: {
+    publicKey:         "",  // Account → General → Public Key
+    serviceId:         "",  // Email Services → tu servicio de Gmail (service_...)
+    templateOwner:     "",  // Plantilla que TE llega a ti con la solicitud (template_...)
+    templateAutoreply: ""   // Plantilla de confirmación para el visitante (template_...)
+  },
+
   socials: {
     instagram: "",                        // ← Ej. "https://instagram.com/arix"
     tiktok:    "",

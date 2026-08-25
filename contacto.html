@@ -116,7 +116,7 @@
 <a class="wa-float" data-wa aria-label="Escribir por WhatsApp"><span data-icon="whatsapp"></span></a>
 
 <script src="assets/js/plans.js?v=4"></script>
-<script src="assets/js/app.js?v=5"></script>
+<script src="assets/js/app.js?v=6"></script>
 <script src="assets/js/quote.js?v=4"></script>
 <script>
 /* Lógica específica de contacto (sin backend) */
@@ -151,39 +151,73 @@ document.addEventListener("DOMContentLoaded", function(){
     else { showToast("Configura el número en CONFIG (app.js) para WhatsApp."); }
   });
 
-  // Envío del formulario por correo (Netlify Forms, sin recargar la página)
+  // ¿EmailJS configurado? (envía a ARIX + autoconfirmación al visitante)
+  function emailjsReady(){
+    return CONFIG.emailjs && CONFIG.emailjs.publicKey && CONFIG.emailjs.serviceId && CONFIG.emailjs.templateOwner;
+  }
+
+  // Carga el SDK de EmailJS solo si está configurado
+  if (emailjsReady()){
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+    s.onload = function(){ try { emailjs.init({ publicKey: CONFIG.emailjs.publicKey }); } catch(e){} };
+    document.head.appendChild(s);
+  }
+
+  // Reúne los datos del formulario en un objeto para plantillas/registro
+  function collect(){
+    return {
+      nombre:         document.getElementById("cName").value.trim(),
+      empresa:        document.getElementById("cCompany").value.trim() || "-",
+      whatsapp:       document.getElementById("cWa").value.trim(),
+      email:          document.getElementById("cEmail").value.trim(),
+      tipo_proyecto:  document.getElementById("cType").value,
+      presupuesto:    document.getElementById("cBudget").value,
+      mensaje:        document.getElementById("cMsg").value.trim() || "-",
+      fecha:          new Date().toLocaleString("es-CO")
+    };
+  }
+
+  // Envío del formulario
   form.addEventListener("submit", function(ev){
     ev.preventDefault();
-    // Validación mínima
-    if (!document.getElementById("cName").value.trim() || !document.getElementById("cWa").value.trim()){
-      showToast("Escribe al menos tu nombre y WhatsApp.");
-      return;
-    }
-    var data = new FormData(form);
-    // En desarrollo local (file:// o localhost) Netlify no existe: mostramos aviso.
-    var esNetlify = location.hostname.indexOf("netlify.app") !== -1 || location.hostname.indexOf("arixdigital") !== -1;
-    if (!esNetlify){
-      showToast("✅ Formulario listo. En el sitio publicado enviará el correo automáticamente.");
-      return;
-    }
+    var p = collect();
+    if (!p.nombre || !p.whatsapp){ showToast("Escribe al menos tu nombre y WhatsApp."); return; }
+
     var btn = form.querySelector('button[type="submit"]');
     var txtOrig = btn.textContent; btn.textContent = "Enviando…"; btn.disabled = true;
+    function done(ok){
+      btn.textContent = txtOrig; btn.disabled = false;
+      if (ok){ showToast("✅ ¡Solicitud enviada! Revisa tu correo de confirmación."); form.reset(); }
+      else { showToast("No se pudo enviar. Intenta por WhatsApp."); }
+    }
+
+    // 1) OPCIÓN A: EmailJS (correo a ARIX + autoconfirmación al visitante)
+    if (emailjsReady() && typeof emailjs !== "undefined"){
+      emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateOwner, p)
+        .then(function(){
+          // Autoconfirmación al visitante (si dejó email y hay plantilla)
+          if (CONFIG.emailjs.templateAutoreply && p.email){
+            emailjs.send(CONFIG.emailjs.serviceId, CONFIG.emailjs.templateAutoreply, p).catch(function(){});
+          }
+          done(true);
+        })
+        .catch(function(){ done(false); });
+      return;
+    }
+
+    // 2) OPCIÓN B (respaldo): Netlify Forms — guarda la solicitud y te notifica
+    var esNetlify = location.hostname.indexOf("netlify.app") !== -1 || location.hostname.indexOf("arixdigital") !== -1;
+    if (!esNetlify){
+      btn.textContent = txtOrig; btn.disabled = false;
+      showToast("✅ Formulario listo. En el sitio publicado se enviará automáticamente.");
+      return;
+    }
     fetch("/", {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams(data).toString()
-    }).then(function(res){
-      if (res.ok){
-        showToast("✅ ¡Solicitud enviada! Te contactaremos pronto.");
-        form.reset();
-      } else {
-        showToast("No se pudo enviar. Intenta por WhatsApp.");
-      }
-    }).catch(function(){
-      showToast("Sin conexión. Intenta por WhatsApp.");
-    }).finally(function(){
-      btn.textContent = txtOrig; btn.disabled = false;
-    });
+      body: new URLSearchParams(new FormData(form)).toString()
+    }).then(function(res){ done(res.ok); }).catch(function(){ done(false); });
   });
 });
 </script>
