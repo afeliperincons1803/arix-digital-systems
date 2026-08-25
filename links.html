@@ -11,9 +11,19 @@
 <meta property="og:image" content="assets/img/banner-arix.png" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="assets/img/logo-arix.png" />
-<link rel="stylesheet" href="assets/css/styles.css?v=4" />
+<link rel="stylesheet" href="assets/css/styles.css?v=5" />
 </head>
 <body>
+
+<!-- Aviso para quien abre el link dentro de TikTok/Instagram (navegador in-app) -->
+<div class="inapp-tip" id="inappTip" role="alert">
+  <span class="tip-ic">🌐</span>
+  <span class="tip-body">
+    Para que <b>WhatsApp y todos los botones</b> funcionen bien, ábrelo en tu navegador:
+    toca los <span class="tip-dots">⋯</span> (arriba) y elige <b>“Abrir en el navegador”</b>.
+  </span>
+  <button class="tip-close" id="tipClose" aria-label="Cerrar aviso">✕</button>
+</div>
 
 <div class="bg-layer" aria-hidden="true">
   <div class="bg-grid"></div>
@@ -64,14 +74,14 @@
       </a>
     </div>
 
-    <!-- Redes sociales con etiqueta y color de marca -->
+    <!-- Redes sociales solo como logos (color de marca) -->
     <div class="divider-mini">SÍGUENOS</div>
-    <div class="links-social-labeled">
-      <a class="social-lbl" data-social="instagram" aria-label="Instagram"><span data-icon="instagram"></span> Instagram <span class="sl-arrow" data-icon="arrow"></span></a>
-      <a class="social-lbl" data-social="tiktok" aria-label="TikTok"><span data-icon="tiktok"></span> TikTok <span class="sl-arrow" data-icon="arrow"></span></a>
-      <a class="social-lbl" data-social="youtube" aria-label="YouTube"><span data-icon="youtube"></span> YouTube <span class="sl-arrow" data-icon="arrow"></span></a>
-      <a class="social-lbl" data-social="facebook" aria-label="Facebook"><span data-icon="facebook"></span> Facebook <span class="sl-arrow" data-icon="arrow"></span></a>
-      <a class="social-lbl" data-social="linkedin" aria-label="LinkedIn"><span data-icon="linkedin"></span> LinkedIn <span class="sl-arrow" data-icon="arrow"></span></a>
+    <div class="link-social-row">
+      <a class="social-ic" data-social="instagram" aria-label="Instagram"><span data-icon="instagram"></span></a>
+      <a class="social-ic" data-social="tiktok" aria-label="TikTok"><span data-icon="tiktok"></span></a>
+      <a class="social-ic" data-social="youtube" aria-label="YouTube"><span data-icon="youtube"></span></a>
+      <a class="social-ic" data-social="facebook" aria-label="Facebook"><span data-icon="facebook"></span></a>
+      <a class="social-ic" data-social="linkedin" aria-label="LinkedIn"><span data-icon="linkedin"></span></a>
     </div>
 
     <p class="links-foot">© <span id="year"></span> ARIX Digital Systems — Andrés Rincón</p>
@@ -94,6 +104,23 @@
     setTimeout(function(){ el.textContent = words[i]; el.style.opacity = 1; }, 250);
   }, 2200);
   el.style.transition = "opacity .25s ease";
+})();
+
+/* Detecta navegador in-app (TikTok, Instagram, Facebook, etc.) y muestra el aviso */
+(function(){
+  var tip = document.getElementById("inappTip");
+  var close = document.getElementById("tipClose");
+  if (!tip) return;
+  var ua = (navigator.userAgent || "").toLowerCase();
+  // Firmas típicas de webviews de apps sociales
+  var inApp = /tiktok|musical_ly|bytedance|instagram|fban|fbav|fb_iab|line\/|snapchat|pinterest|okhttp|; wv\)/.test(ua);
+  var cerrado = false;
+  try { cerrado = sessionStorage.getItem("arix_inapp_tip") === "1"; } catch(e){}
+  if (inApp && !cerrado){ tip.classList.add("show"); }
+  if (close) close.addEventListener("click", function(){
+    tip.classList.remove("show");
+    try { sessionStorage.setItem("arix_inapp_tip", "1"); } catch(e){}
+  });
 })();
 </script>
 </body>
