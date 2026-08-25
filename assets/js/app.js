@@ -24,7 +24,7 @@
 const CONFIG = {
   whatsapp: "573203778133",              // ← TU NÚMERO DE WHATSAPP (Colombia +57)
   website:  "",                           // ← Ej. "https://arix-digital.com" (opcional)
-  email:    "",                           // ← Ej. "contacto@arixdigital.com" (opcional)
+  email:    "arixdigitalsystems@gmail.com", // ← Correo de contacto de ARIX
   socials: {
     instagram: "",                        // ← Ej. "https://instagram.com/arix"
     tiktok:    "",
