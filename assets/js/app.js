@@ -31,10 +31,10 @@ const CONFIG = {
      conecta tu Gmail (Email Services) y crea 2 plantillas (Email Templates).
      Mientras estén vacíos, el formulario usa Netlify Forms como respaldo. */
   emailjs: {
-    publicKey:         "",  // Account → General → Public Key
-    serviceId:         "",  // Email Services → tu servicio de Gmail (service_...)
-    templateOwner:     "",  // Plantilla que TE llega a ti con la solicitud (template_...)
-    templateAutoreply: ""   // Plantilla de confirmación para el visitante (template_...)
+    publicKey:         "XPjq0QLOmDX8SP0LS",  // Account → General → Public Key
+    serviceId:         "service_xx488lo",     // Email Services → Gmail
+    templateOwner:     "template_8ya9ed8",    // Plantilla "Contact Us" (te llega a ti)
+    templateAutoreply: "template_7oudpbd"     // Plantilla "Auto-Reply" (confirmación al visitante)
   },
 
   socials: {
