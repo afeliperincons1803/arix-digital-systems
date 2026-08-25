@@ -38,11 +38,11 @@ const CONFIG = {
   },
 
   socials: {
-    instagram: "",                        // ← Ej. "https://instagram.com/arix"
-    tiktok:    "",
-    youtube:   "",
-    facebook:  "",
-    linkedin:  ""
+    instagram: "https://www.instagram.com/arixdigitalsystems/",
+    tiktok:    "",   // ← pásame el enlace completo de TikTok (parecía cortado)
+    youtube:   "https://www.youtube.com/@ARIXDIGITALSYSTEMS",
+    facebook:  "https://www.facebook.com/profile.php?id=61593973492818",
+    linkedin:  ""    // ← cuando crees la Company Page
   }
 };
 
