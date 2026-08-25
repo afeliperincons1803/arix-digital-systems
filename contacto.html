@@ -70,14 +70,20 @@
         </div>
       </div>
 
-      <form class="glass reveal d2" style="padding:1.8rem;" id="contactForm" novalidate>
-        <div class="field"><label for="cName">Nombre</label><input id="cName" type="text" placeholder="Tu nombre" required></div>
-        <div class="field"><label for="cCompany">Empresa</label><input id="cCompany" type="text" placeholder="Opcional"></div>
-        <div class="field"><label for="cWa">WhatsApp</label><input id="cWa" type="tel" placeholder="Tu número" required></div>
-        <div class="field"><label for="cEmail">Email</label><input id="cEmail" type="email" placeholder="tucorreo@ejemplo.com"></div>
+      <!-- Formulario Netlify Forms: envía un correo a ARIX con los datos.
+           Requiere: name, method POST, data-netlify, form-name oculto y honeypot. -->
+      <form class="glass reveal d2" style="padding:1.8rem;" id="contactForm"
+            name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contacto">
+        <p hidden><label>No llenar: <input name="bot-field"></label></p>
+
+        <div class="field"><label for="cName">Nombre</label><input id="cName" name="nombre" type="text" placeholder="Tu nombre" required></div>
+        <div class="field"><label for="cCompany">Empresa</label><input id="cCompany" name="empresa" type="text" placeholder="Opcional"></div>
+        <div class="field"><label for="cWa">WhatsApp</label><input id="cWa" name="whatsapp" type="tel" placeholder="Tu número" required></div>
+        <div class="field"><label for="cEmail">Email</label><input id="cEmail" name="email" type="email" placeholder="tucorreo@ejemplo.com"></div>
         <div class="field">
           <label for="cType">Tipo de proyecto</label>
-          <select id="cType">
+          <select id="cType" name="tipo_proyecto">
             <option>Página web</option><option>Tienda</option><option>Catálogo</option><option>Sistema</option>
             <option>Pedidos</option><option>Reservas</option><option>Automatización</option><option>IA</option>
             <option>Branding</option><option>Contenido</option><option>Otro</option>
@@ -85,14 +91,17 @@
         </div>
         <div class="field">
           <label for="cBudget">Presupuesto aproximado</label>
-          <select id="cBudget">
+          <select id="cBudget" name="presupuesto">
             <option>Menos de $500.000</option><option>$500.000 – $1.000.000</option><option>$1.000.000 – $2.000.000</option>
             <option>$2.000.000 – $4.000.000</option><option>Más de $4.000.000</option><option>Aún no lo sé</option>
           </select>
         </div>
-        <div class="field"><label for="cMsg">Mensaje</label><textarea id="cMsg" rows="4" placeholder="Cuéntanos sobre tu proyecto"></textarea></div>
-        <button type="submit" class="btn btn-primary btn-block">Preparar solicitud</button>
-        <p style="color:var(--text-dim);font-size:.8rem;text-align:center;margin-top:.8rem;">Esta versión es estática: al enviar, prepararemos tu mensaje para continuar por WhatsApp.</p>
+        <div class="field"><label for="cMsg">Mensaje</label><textarea id="cMsg" name="mensaje" rows="4" placeholder="Cuéntanos sobre tu proyecto"></textarea></div>
+
+        <button type="submit" class="btn btn-primary btn-block">Enviar solicitud por correo</button>
+        <div style="text-align:center;margin:.8rem 0 .2rem;color:var(--text-dim);font-size:.8rem;">— o —</div>
+        <button type="button" id="waContact" class="btn btn-ghost btn-block">Continuar por WhatsApp</button>
+        <p style="color:var(--text-dim);font-size:.78rem;text-align:center;margin-top:.8rem;">Tu solicitud llega a nuestro correo. También puedes escribirnos directo por WhatsApp.</p>
       </form>
     </div>
   </div>
@@ -119,9 +128,9 @@ document.addEventListener("DOMContentLoaded", function(){
   }
 
   var form = document.getElementById("contactForm");
-  form.addEventListener("submit", function(ev){
-    ev.preventDefault();
-    // Construir mensaje de WhatsApp con los datos del formulario
+
+  // Arma el texto para WhatsApp con los datos del formulario
+  function buildContactWa(){
     var msg = "Hola ARIX Digital Systems.\n\n";
     msg += "Nombre: " + (document.getElementById("cName").value || "-") + "\n";
     var company = document.getElementById("cCompany").value; if (company) msg += "Empresa: " + company + "\n";
@@ -131,11 +140,50 @@ document.addEventListener("DOMContentLoaded", function(){
     msg += "Presupuesto: " + document.getElementById("cBudget").value + "\n";
     var m = document.getElementById("cMsg").value; if (m) msg += "Mensaje: " + m + "\n";
     msg += "\nQuisiera recibir más información.";
+    return msg;
+  }
 
-    showToast("✅ Tu solicitud está lista. Continúa por WhatsApp.");
-    var url = waLink(msg);
-    if (url){ setTimeout(function(){ window.open(url, "_blank", "noopener"); }, 600); }
-    else { showToast("Configura el número en CONFIG (app.js) para continuar por WhatsApp."); }
+  // Botón "Continuar por WhatsApp"
+  var waBtn = document.getElementById("waContact");
+  if (waBtn) waBtn.addEventListener("click", function(){
+    var url = waLink(buildContactWa());
+    if (url){ window.open(url, "_blank", "noopener"); }
+    else { showToast("Configura el número en CONFIG (app.js) para WhatsApp."); }
+  });
+
+  // Envío del formulario por correo (Netlify Forms, sin recargar la página)
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    // Validación mínima
+    if (!document.getElementById("cName").value.trim() || !document.getElementById("cWa").value.trim()){
+      showToast("Escribe al menos tu nombre y WhatsApp.");
+      return;
+    }
+    var data = new FormData(form);
+    // En desarrollo local (file:// o localhost) Netlify no existe: mostramos aviso.
+    var esNetlify = location.hostname.indexOf("netlify.app") !== -1 || location.hostname.indexOf("arixdigital") !== -1;
+    if (!esNetlify){
+      showToast("✅ Formulario listo. En el sitio publicado enviará el correo automáticamente.");
+      return;
+    }
+    var btn = form.querySelector('button[type="submit"]');
+    var txtOrig = btn.textContent; btn.textContent = "Enviando…"; btn.disabled = true;
+    fetch("/", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(data).toString()
+    }).then(function(res){
+      if (res.ok){
+        showToast("✅ ¡Solicitud enviada! Te contactaremos pronto.");
+        form.reset();
+      } else {
+        showToast("No se pudo enviar. Intenta por WhatsApp.");
+      }
+    }).catch(function(){
+      showToast("Sin conexión. Intenta por WhatsApp.");
+    }).finally(function(){
+      btn.textContent = txtOrig; btn.disabled = false;
+    });
   });
 });
 </script>
