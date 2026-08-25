@@ -1,0 +1,17 @@
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+
+# Logs y temporales
+*.log
+node_modules/
+
+# Documentos internos (no publicar en el sitio ni en el repo)
+INFORME-QA.md
+AUTOMATIZACION-WHATSAPP-IA.md
+arix-web-deploy.zip

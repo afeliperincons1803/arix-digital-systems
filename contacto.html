@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contacto | ARIX Digital Systems</title>
+<meta name="description" content="Hablemos de tu proyecto. Cuéntanos qué necesitas y continúa por WhatsApp. ARIX Digital Systems." />
+<meta name="theme-color" content="#041426" />
+<meta property="og:title" content="Contacto | ARIX Digital Systems" />
+<meta property="og:description" content="Cuéntanos qué necesitas y te ayudamos a definir la solución adecuada." />
+<meta property="og:image" content="assets/img/banner-arix.png" />
+<link rel="icon" href="assets/img/logo-arix.png" />
+<link rel="stylesheet" href="assets/css/styles.css?v=4" />
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <canvas id="particles"></canvas>
+</div>
+
+<!-- NAVBAR -->
+<header class="nav scrolled" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand" aria-label="ARIX - Inicio">
+      <img src="assets/img/logo-arix.png" alt="ARIX Digital Systems" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+      <span class="brand-mark" style="display:none;">AR</span>
+      <span class="brand-txt"><small>DIGITAL SYSTEMS</small><strong>ARIX</strong></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#soluciones">Soluciones</a>
+      <a href="index.html#planes">Planes</a>
+      <a href="cotizar.html">Cotizar</a>
+      <a href="links.html" class="btn btn-ghost btn-sm nav-cta">Link en bio</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="section-pad" style="padding-top:120px;">
+  <div class="container">
+    <div class="section-head center reveal">
+      <span class="eyebrow">Contacto</span>
+      <h1 class="section-title">Hablemos de tu <span class="grad-text">proyecto</span></h1>
+      <p class="section-sub">Cuéntanos qué necesitas. Prepararemos tu solicitud y podrás continuar por WhatsApp.</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="card">
+          <h4><span data-icon="whatsapp" style="width:22px;display:inline-flex;color:var(--green);"></span> WhatsApp</h4>
+          <p style="color:var(--text-dim);">La forma más rápida de recibir tu cotización.</p>
+          <a class="btn btn-primary btn-sm" data-wa data-wa-msg="Hola ARIX Digital Systems, quisiera más información." style="margin-top:.8rem;">Escribir por WhatsApp</a>
+        </div>
+        <div class="card">
+          <h4><span data-icon="mail" style="width:22px;display:inline-flex;color:var(--cyan);"></span> Email</h4>
+          <p style="color:var(--text-dim);" id="emailText">Configura tu email en CONFIG (app.js).</p>
+        </div>
+        <div class="card">
+          <h4><span data-icon="web" style="width:22px;display:inline-flex;color:var(--cyan);"></span> Síguenos</h4>
+          <div class="socials" style="margin-top:.6rem;">
+            <a class="social-ic" data-social="instagram" aria-label="Instagram"><span data-icon="instagram"></span></a>
+            <a class="social-ic" data-social="tiktok" aria-label="TikTok"><span data-icon="tiktok"></span></a>
+            <a class="social-ic" data-social="youtube" aria-label="YouTube"><span data-icon="youtube"></span></a>
+            <a class="social-ic" data-social="facebook" aria-label="Facebook"><span data-icon="facebook"></span></a>
+            <a class="social-ic" data-social="linkedin" aria-label="LinkedIn"><span data-icon="linkedin"></span></a>
+          </div>
+        </div>
+      </div>
+
+      <form class="glass reveal d2" style="padding:1.8rem;" id="contactForm" novalidate>
+        <div class="field"><label for="cName">Nombre</label><input id="cName" type="text" placeholder="Tu nombre" required></div>
+        <div class="field"><label for="cCompany">Empresa</label><input id="cCompany" type="text" placeholder="Opcional"></div>
+        <div class="field"><label for="cWa">WhatsApp</label><input id="cWa" type="tel" placeholder="Tu número" required></div>
+        <div class="field"><label for="cEmail">Email</label><input id="cEmail" type="email" placeholder="tucorreo@ejemplo.com"></div>
+        <div class="field">
+          <label for="cType">Tipo de proyecto</label>
+          <select id="cType">
+            <option>Página web</option><option>Tienda</option><option>Catálogo</option><option>Sistema</option>
+            <option>Pedidos</option><option>Reservas</option><option>Automatización</option><option>IA</option>
+            <option>Branding</option><option>Contenido</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cBudget">Presupuesto aproximado</label>
+          <select id="cBudget">
+            <option>Menos de $500.000</option><option>$500.000 – $1.000.000</option><option>$1.000.000 – $2.000.000</option>
+            <option>$2.000.000 – $4.000.000</option><option>Más de $4.000.000</option><option>Aún no lo sé</option>
+          </select>
+        </div>
+        <div class="field"><label for="cMsg">Mensaje</label><textarea id="cMsg" rows="4" placeholder="Cuéntanos sobre tu proyecto"></textarea></div>
+        <button type="submit" class="btn btn-primary btn-block">Preparar solicitud</button>
+        <p style="color:var(--text-dim);font-size:.8rem;text-align:center;margin-top:.8rem;">Esta versión es estática: al enviar, prepararemos tu mensaje para continuar por WhatsApp.</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-bottom">ARIX Digital Systems — Andrés Rincón · © <span id="year"></span> · <a href="index.html" style="color:var(--cyan);">Volver al inicio</a></div>
+  </div>
+</footer>
+
+<a class="wa-float" data-wa aria-label="Escribir por WhatsApp"><span data-icon="whatsapp"></span></a>
+
+<script src="assets/js/plans.js?v=4"></script>
+<script src="assets/js/app.js?v=4"></script>
+<script src="assets/js/quote.js?v=4"></script>
+<script>
+/* Lógica específica de contacto (sin backend) */
+document.addEventListener("DOMContentLoaded", function(){
+  // Mostrar email si está configurado
+  if (CONFIG.email && CONFIG.email.trim() !== ""){
+    var e = document.getElementById("emailText");
+    e.innerHTML = '<a href="mailto:' + CONFIG.email + '" style="color:var(--cyan);">' + CONFIG.email + '</a>';
+  }
+
+  var form = document.getElementById("contactForm");
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    // Construir mensaje de WhatsApp con los datos del formulario
+    var msg = "Hola ARIX Digital Systems.\n\n";
+    msg += "Nombre: " + (document.getElementById("cName").value || "-") + "\n";
+    var company = document.getElementById("cCompany").value; if (company) msg += "Empresa: " + company + "\n";
+    msg += "WhatsApp: " + (document.getElementById("cWa").value || "-") + "\n";
+    var email = document.getElementById("cEmail").value; if (email) msg += "Email: " + email + "\n";
+    msg += "Tipo de proyecto: " + document.getElementById("cType").value + "\n";
+    msg += "Presupuesto: " + document.getElementById("cBudget").value + "\n";
+    var m = document.getElementById("cMsg").value; if (m) msg += "Mensaje: " + m + "\n";
+    msg += "\nQuisiera recibir más información.";
+
+    showToast("✅ Tu solicitud está lista. Continúa por WhatsApp.");
+    var url = waLink(msg);
+    if (url){ setTimeout(function(){ window.open(url, "_blank", "noopener"); }, 600); }
+    else { showToast("Configura el número en CONFIG (app.js) para continuar por WhatsApp."); }
+  });
+});
+</script>
+</body>
+</html>

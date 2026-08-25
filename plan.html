@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Detalle del plan | ARIX Digital Systems</title>
+<meta name="description" content="Conoce el detalle del plan seleccionado: qué incluye, beneficios, tiempo estimado y personalización. ARIX Digital Systems." />
+<meta name="theme-color" content="#041426" />
+<meta property="og:title" content="Plan ARIX Digital Systems" />
+<meta property="og:description" content="Detalle del plan, extras y valor estimado." />
+<meta property="og:image" content="assets/img/banner-arix.png" />
+<link rel="icon" href="assets/img/logo-arix.png" />
+<link rel="stylesheet" href="assets/css/styles.css?v=4" />
+</head>
+<body>
+
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-grid"></div>
+  <div class="glow g1"></div><div class="glow g2"></div><div class="glow g3"></div>
+  <canvas id="particles"></canvas>
+</div>
+
+<!-- NAVBAR -->
+<header class="nav scrolled" id="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand" aria-label="ARIX - Inicio">
+      <img src="assets/img/logo-arix.png" alt="ARIX Digital Systems" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';">
+      <span class="brand-mark" style="display:none;">AR</span>
+      <span class="brand-txt"><small>DIGITAL SYSTEMS</small><strong>ARIX</strong></span>
+    </a>
+    <nav class="nav-links" id="navLinks" aria-label="Navegación principal">
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#soluciones">Soluciones</a>
+      <a href="index.html#planes">Planes</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="cotizar.html" class="btn btn-primary btn-sm nav-cta">Cotizar proyecto</a>
+    </nav>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- DETALLE DEL PLAN (renderizado por quote.js) -->
+<main class="section-pad plan-hero">
+  <div class="container">
+    <div class="plan-detail" id="planDetail">
+      <!-- Contenido dinámico según ?service=...&plan=... -->
+      <div class="glass" style="padding:2rem;text-align:center;">Cargando plan…</div>
+    </div>
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-bottom">ARIX Digital Systems — Andrés Rincón · © <span id="year"></span> · <a href="index.html" style="color:var(--cyan);">Volver al inicio</a></div>
+  </div>
+</footer>
+
+<a class="wa-float" data-wa aria-label="Escribir por WhatsApp"><span data-icon="whatsapp"></span></a>
+
+<script src="assets/js/plans.js?v=4"></script>
+<script src="assets/js/app.js?v=4"></script>
+<script src="assets/js/quote.js?v=4"></script>
+</body>
+</html>

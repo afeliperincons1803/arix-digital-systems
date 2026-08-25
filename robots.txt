@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Cambia esta URL por tu dominio final cuando lo tengas
+Sitemap: https://arix-digital.netlify.app/sitemap.xml

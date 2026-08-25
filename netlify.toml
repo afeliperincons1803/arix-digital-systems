@@ -1,0 +1,34 @@
+# ============================================================
+# Configuración de Netlify — ARIX Digital Systems (sitio estático)
+# ============================================================
+# Este proyecto NO necesita build (es HTML/CSS/JS puro).
+# Netlify publica directamente los archivos de esta carpeta.
+# La página 404.html se usa automáticamente para rutas no encontradas.
+
+[build]
+  publish = "."      # Carpeta que se publica (la raíz del proyecto)
+  command = ""        # Sin comando de build (sitio estático)
+
+# Cabeceras de seguridad y rendimiento
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Caché larga para imágenes (no cambian a menudo)
+[[headers]]
+  for = "/assets/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Los CSS/JS ya usan versión (?v=4), así que pueden cachearse fuerte.
+[[headers]]
+  for = "/assets/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+[[headers]]
+  for = "/assets/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
