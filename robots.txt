@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Cambia esta URL por tu dominio final cuando lo tengas
-Sitemap: https://symphonious-cucurucho-d4fb8d.netlify.app/sitemap.xml
+Sitemap: https://arix-digital.netlify.app/sitemap.xml
