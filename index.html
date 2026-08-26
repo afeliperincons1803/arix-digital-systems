@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=9" />
+<link rel="stylesheet" href="assets/css/styles.css?v=10" />
 </head>
 <body>
 
@@ -435,13 +435,39 @@ const PROJECTS = [
     if (window.__arixReveal) window.__arixReveal.observe(block);
   });
 
-  /* Acordeón: activar apertura/cierre de cada servicio (incluye Mantenimiento) */
+  /* Acordeón: apertura/cierre suave animando la altura real (scrollHeight).
+     Incluye el bloque de Mantenimiento. Respeta prefers-reduced-motion. */
+  var reduceMo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.querySelectorAll('.sol-toggle').forEach(function(t){
-    function toggle(){
-      var blk = t.closest('.solution-block');
-      var open = blk.classList.toggle('open');
-      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var blk = t.closest('.solution-block');
+    var wrap = blk.querySelector('.sol-plans-wrap');
+    if (!wrap) return;
+
+    // Deja la altura fija en los que ya empiezan abiertos
+    if (blk.classList.contains('open')){
+      wrap.style.maxHeight = reduceMo ? 'none' : (wrap.scrollHeight + 'px');
     }
+    // Cuando termina de abrir, quita el límite para que pueda reajustar (responsive)
+    wrap.addEventListener('transitionend', function(e){
+      if (e.propertyName === 'max-height' && blk.classList.contains('open')){
+        wrap.style.maxHeight = 'none';
+      }
+    });
+
+    function setOpen(open){
+      blk.classList.toggle('open', open);
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (reduceMo){ wrap.style.maxHeight = open ? 'none' : '0px'; return; }
+      if (open){
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+      } else {
+        // fija la altura actual y luego colapsa (transición al revés)
+        wrap.style.maxHeight = wrap.scrollHeight + 'px';
+        void wrap.offsetHeight; // reflow
+        requestAnimationFrame(function(){ wrap.style.maxHeight = '0px'; });
+      }
+    }
+    function toggle(){ setOpen(!blk.classList.contains('open')); }
     t.addEventListener('click', toggle);
     t.addEventListener('keydown', function(e){
       if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }

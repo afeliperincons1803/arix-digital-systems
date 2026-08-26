@@ -268,8 +268,10 @@ select:focus-visible, textarea:focus-visible{
 .solution-block.open .sol-toggle-btn{ background:rgba(255,255,255,.06); color:var(--white); border:1px solid var(--card-border); box-shadow:none; }
 .solution-block.open .sol-toggle-btn .chev{ transform:rotate(180deg); }
 
-.sol-plans-wrap{ max-height:0; overflow:hidden; transition:max-height .5s var(--ease); }
-.solution-block.open .sol-plans-wrap{ max-height:5000px; }
+/* La altura la controla el JS (scrollHeight) para una apertura suave y proporcional.
+   Se acompaña de un fundido + deslizamiento, igual que al aparecer los elementos. */
+.sol-plans-wrap{ max-height:0; overflow:hidden; opacity:0; transform:translateY(16px); transition:max-height .55s var(--ease), opacity .45s var(--ease), transform .5s var(--ease); }
+.solution-block.open .sol-plans-wrap{ opacity:1; transform:none; }
 .sol-plans-wrap .plans{ margin-top:1.5rem; }
 
 @media (max-width:700px){
