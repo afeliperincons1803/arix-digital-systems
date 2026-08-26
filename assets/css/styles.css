@@ -240,6 +240,9 @@ select:focus-visible, textarea:focus-visible{
 .sol-head p{ color:var(--text-dim); max-width:680px; margin-top:.55rem; }
 .sol-for{ color:var(--gray-light); font-size:.88rem; margin-top:.5rem; max-width:680px; }
 .sol-for b{ color:var(--cyan); }
+/* Chips de ejemplos (para que la gente se identifique) */
+.ex-chips{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }
+.ex-chip{ font-size:.72rem; font-weight:600; padding:.3rem .65rem; border-radius:100px; background:rgba(40,229,127,.08); border:1px solid rgba(40,229,127,.28); color:var(--gray-light); }
 @media (max-width:560px){
   .sol-head h3{ font-size:1.8rem; }
   .sol-head .pill{ font-size:.66rem; }
@@ -606,9 +609,12 @@ select:focus-visible, textarea:focus-visible{
 .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(120%); background:var(--grad-brand); color:#02121f; font-weight:700; padding:.9rem 1.5rem; border-radius:100px; box-shadow:var(--shadow); z-index:300; transition:transform .45s var(--ease); max-width:90%; text-align:center; }
 .toast.show{ transform:translateX(-50%) translateY(0); }
 
-.wa-float{ position:fixed; bottom:24px; right:24px; z-index:150; width:58px; height:58px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(135deg,#13D77A,#08C9B0); color:#02121f; box-shadow:0 10px 30px rgba(19,215,122,.4); transition:transform .3s; }
-.wa-float svg{ width:30px; height:30px; }
-.wa-float:hover{ transform:scale(1.1) rotate(6deg); }
+/* Botón flotante WhatsApp: pastilla horizontal con texto, elevado sobre el badge */
+.wa-float{ position:fixed; bottom:92px; right:20px; z-index:150; display:inline-flex; align-items:center; gap:.5rem; padding:.7rem 1.15rem; border-radius:100px; background:linear-gradient(135deg,#13D77A,#08C9B0); color:#02121f; font-weight:800; box-shadow:0 10px 30px rgba(19,215,122,.45); transition:transform .25s, box-shadow .25s; }
+.wa-float svg{ width:26px; height:26px; }
+.wa-label{ font-size:.95rem; letter-spacing:.01em; }
+.wa-float:hover{ transform:translateY(-3px); box-shadow:0 14px 38px rgba(19,215,122,.6); }
+@media (max-width:560px){ .wa-float{ bottom:84px; right:14px; padding:.65rem 1rem; } .wa-label{ font-size:.9rem; } }
 
 /* ------------------ 15. FOOTER ------------------ */
 footer{ position:relative; z-index:2; border-top:1px solid var(--card-border); background:rgba(4,20,38,.7); margin-top:2rem; }

@@ -419,6 +419,24 @@ const EXAMPLES = {
   content:    { all: "", start: "", pro: "", custom: "" }
 };
 
+/* ---------- CASOS / EJEMPLOS por servicio ----------
+   Tipos de negocio con los que la gente se identifica. Se muestran como chips. */
+const SERVICE_CASES = {
+  web:        ["Emprendedores", "Profesionales", "Marca personal", "Negocios locales"],
+  store:      ["Ropa", "Accesorios", "Postres", "Productos naturales"],
+  catalog:    ["Restaurantes", "Ferreterías", "Distribuidoras", "Servicios"],
+  orders:     ["Restaurantes", "Reposterías", "Comidas rápidas", "Cafeterías"],
+  delivery:   ["Comida a domicilio", "Mensajería", "Tiendas con envío"],
+  booking:    ["Barberías", "Peluquerías", "Spa", "Consultorios", "Entrenadores"],
+  crm:        ["Ventas", "Inmobiliarias", "Agencias", "Servicios B2B"],
+  business:   ["Empresas", "Distribuidoras", "Franquicias", "PYMEs"],
+  automation: ["Captar clientes", "Seguimiento", "Notificaciones", "Post-venta"],
+  ai:         ["Atención 24/7", "FAQ inteligente", "Chatbot de ventas"],
+  branding:   ["Marcas nuevas", "Rebranding", "Emprendimientos"],
+  content:    ["Redes sociales", "Reels / TikTok", "Campañas", "Fotografía"]
+};
+function casesFor(service){ return SERVICE_CASES[service] || []; }
+
 /** Devuelve el enlace de ejemplo para un servicio (y nivel opcional), o "" si no hay. */
 function exampleFor(service, level){
   var e = EXAMPLES[service];

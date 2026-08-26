@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=8" />
+<link rel="stylesheet" href="assets/css/styles.css?v=9" />
 </head>
 <body>
 
@@ -316,7 +316,7 @@
 </footer>
 
 <!-- WhatsApp flotante -->
-<a class="wa-float" data-wa aria-label="Escribir por WhatsApp"><span data-icon="whatsapp"></span></a>
+<a class="wa-float" data-wa aria-label="Escribir por WhatsApp"><span data-icon="whatsapp"></span><span class="wa-label">WhatsApp</span></a>
 
 <!-- ============ DATOS DE PÁGINA (FAQ) ============ -->
 <script>
@@ -381,7 +381,7 @@ const PROJECTS = [
 ];
 </script>
 
-<script src="assets/js/plans.js?v=5"></script>
+<script src="assets/js/plans.js?v=6"></script>
 <script src="assets/js/app.js?v=9"></script>
 <script>
 /* ============================================================
@@ -420,11 +420,13 @@ const PROJECTS = [
     });
 
     var forWho = s.forWho ? '<p class="sol-for"><b>Ideal para:</b> ' + s.forWho + '</p>' : '';
+    var cases = (typeof casesFor === "function") ? casesFor(service) : [];
+    var chips = cases.length ? '<div class="ex-chips">' + cases.map(function(c){ return '<span class="ex-chip">' + c + '</span>'; }).join('') + '</div>' : '';
     block.innerHTML =
       '<div class="sol-toggle" role="button" tabindex="0" aria-expanded="' + (isOpen ? 'true' : 'false') + '">' +
         '<div class="sol-head">' +
           '<h3><span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3>' +
-          '<p>' + s.intro + '</p>' + forWho +
+          '<p>' + s.intro + '</p>' + forWho + chips +
         '</div>' +
         '<span class="sol-toggle-btn">Ver planes y precios <span class="chev">▾</span></span>' +
       '</div>' +
