@@ -230,10 +230,18 @@ select:focus-visible, textarea:focus-visible{
 .plan-features li::before{ content:"✓"; color:var(--green); font-weight:900; flex:none; }
 .plan .btn{ margin-top:auto; }
 
-.solution-block{ margin-top:2.6rem; }
-.sol-head{ margin-bottom:1.4rem; }
-.sol-head h3{ font-size:clamp(1.4rem,3vw,2rem); display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; }
-.sol-head p{ color:var(--text-dim); max-width:680px; margin-top:.4rem; }
+.solution-block{ margin-top:2.8rem; padding-top:2rem; border-top:1px solid var(--card-border); }
+.sol-head{ margin-bottom:1.4rem; position:relative; padding-left:16px; }
+/* Barra de acento con degradado de marca a la izquierda del título */
+.sol-head::before{ content:""; position:absolute; left:0; top:.1em; bottom:.35em; width:5px; border-radius:6px; background:var(--grad-brand); box-shadow:0 0 16px rgba(22,200,229,.55); }
+.sol-head h3{ font-size:clamp(1.7rem,6vw,2.15rem); display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; line-height:1.1; }
+.sol-name{ background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:900; letter-spacing:-.01em; }
+.sol-head .pill{ transform:translateY(-1px); }
+.sol-head p{ color:var(--text-dim); max-width:680px; margin-top:.55rem; }
+@media (max-width:560px){
+  .sol-head h3{ font-size:1.8rem; }
+  .sol-head .pill{ font-size:.66rem; }
+}
 
 .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:.6rem; justify-content:center; margin:1.4rem 0; }
 .flow-step{ padding:.6rem 1rem; border-radius:100px; border:1px solid var(--card-border); background:rgba(22,200,229,.06); font-size:.85rem; font-weight:600; white-space:nowrap; }
@@ -282,7 +290,12 @@ select:focus-visible, textarea:focus-visible{
 
 .about-grid{ display:grid; grid-template-columns:1fr .8fr; gap:2rem; align-items:center; }
 .founder{ padding:1.8rem; border-radius:var(--radius); border:1px solid var(--card-border); background:linear-gradient(135deg,rgba(17,103,216,.1),rgba(8,201,176,.06)); text-align:center; }
-.founder .avatar{ width:110px; height:110px; border-radius:50%; margin:0 auto 1rem; display:grid; place-items:center; font-size:2.4rem; font-weight:900; color:#02121f; background:var(--grad-brand-r); box-shadow:var(--shadow-glow); }
+.founder .avatar{ width:118px; height:118px; border-radius:50%; margin:0 auto 1rem; display:grid; place-items:center; font-size:2.4rem; font-weight:900; color:#02121f; background:var(--grad-brand-r); box-shadow:var(--shadow-glow); overflow:hidden; }
+/* Cuando el avatar contiene el logo, fondo oscuro para que resalte */
+.founder .avatar:has(img){ background:radial-gradient(circle at 50% 42%, rgba(22,200,229,.18), #041426); border:1px solid var(--card-border); }
+.founder .avatar img{ width:74%; height:auto; filter:drop-shadow(0 0 12px rgba(22,200,229,.4)); }
+/* Logo en el footer */
+.footer-brand .brand img{ height:42px; width:auto; }
 .founder h4{ font-size:1.3rem; }
 .founder .role{ color:var(--cyan); font-family:"Consolas",monospace; font-size:.8rem; letter-spacing:.15em; margin-top:.2rem; }
 

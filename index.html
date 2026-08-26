@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=5" />
+<link rel="stylesheet" href="assets/css/styles.css?v=6" />
 </head>
 <body>
 
@@ -213,7 +213,7 @@
         <p style="color:var(--text-dim);margin-top:1rem;">ARIX Digital Systems nace con la visión de simplificar la transformación digital de emprendedores y empresas. Creamos soluciones que no solamente se ven bien: están diseñadas para organizar, vender, automatizar y hacer crecer.</p>
       </div>
       <div class="founder reveal d2">
-        <div class="avatar">AR</div>
+        <div class="avatar"><img src="assets/img/logo-arix.png" alt="ARIX" onerror="this.parentElement.textContent='AR';"></div>
         <h4>Andrés Rincón</h4>
         <div class="role">FUNDADOR / DIGITAL SOLUTIONS</div>
       </div>
@@ -290,7 +290,7 @@
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
-        <a href="index.html" class="brand"><span class="brand-mark" style="display:grid;">AR</span><span class="brand-txt"><small>DIGITAL SYSTEMS</small><strong>ARIX</strong></span></a>
+        <a href="index.html" class="brand"><img src="assets/img/logo-arix.png" alt="ARIX Digital Systems" onerror="this.style.display='none';this.nextElementSibling.style.display='grid';"><span class="brand-mark" style="display:none;">AR</span><span class="brand-txt"><small>DIGITAL SYSTEMS</small><strong>ARIX</strong></span></a>
         <p>Tu negocio. Un solo sistema. Diseñamos, conectamos y automatizamos negocios.</p>
         <div class="socials" style="margin-top:1rem;">
           <a class="social-ic" data-social="instagram" aria-label="Instagram"><span data-icon="instagram"></span></a>
@@ -347,7 +347,7 @@ const BIZ = {
 };
 </script>
 
-<script src="assets/js/plans.js?v=4"></script>
+<script src="assets/js/plans.js?v=5"></script>
 <script src="assets/js/app.js?v=9"></script>
 <script>
 /* ============================================================
@@ -370,6 +370,8 @@ const BIZ = {
       const featured = !!p.badge;
       const btnClass = featured ? "btn btn-primary btn-block" : "btn btn-ghost btn-block";
       const btnLabel = lvl === "custom" ? "Solicitar cotización" : "Elegir " + (lvl === "start" ? "Start" : "Pro");
+      var exUrl = exampleFor(service, lvl);
+      var exBtn = exUrl ? '<a class="btn btn-ghost btn-block" style="margin-top:.6rem;" href="' + exUrl + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>' : '';
       cards +=
         '<div class="plan' + (featured ? ' featured' : '') + '">' +
           (featured ? '<span class="plan-tag">' + p.badge + '</span>' : '') +
@@ -377,11 +379,12 @@ const BIZ = {
           '<div class="price">' + priceTxt + '</div>' +
           '<ul class="plan-features">' + p.includes.slice(0,8).map(function(i){ return '<li>' + i + '</li>'; }).join("") + '</ul>' +
           '<a class="' + btnClass + '" href="plan.html?service=' + service + '&plan=' + lvl + '">' + btnLabel + '</a>' +
+          exBtn +
         '</div>';
     });
 
     block.innerHTML =
-      '<div class="sol-head"><h3>' + s.label + ' <span class="pill">' + s.tag + '</span></h3><p>' + s.intro + '</p></div>' +
+      '<div class="sol-head"><h3><span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3><p>' + s.intro + '</p></div>' +
       '<div class="plans">' + cards + '</div>';
     wrap.appendChild(block);
     if (window.__arixReveal) window.__arixReveal.observe(block);

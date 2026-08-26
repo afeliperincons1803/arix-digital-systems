@@ -396,6 +396,36 @@ const SUPPORT_RATES = {
   urgent: "Soporte urgente fuera de horario: desde $120.000 COP"
 };
 
+/* ---------- EJEMPLOS / DEMOS por servicio ----------
+   Pega aquí el enlace a una plantilla o proyecto de muestra.
+   - Puedes poner un link general con "all", o uno distinto por nivel.
+   - Deja "" para que NO aparezca el botón "Ver ejemplo".
+   Ejemplo:
+     web: { all: "https://midemo.netlify.app" }
+     store: { start:"...", pro:"...", custom:"..." }
+------------------------------------------------------------------- */
+const EXAMPLES = {
+  web:        { all: "", start: "", pro: "", custom: "" },
+  store:      { all: "", start: "", pro: "", custom: "" },
+  catalog:    { all: "", start: "", pro: "", custom: "" },
+  orders:     { all: "", start: "", pro: "", custom: "" },
+  delivery:   { all: "", start: "", pro: "", custom: "" },
+  booking:    { all: "", start: "", pro: "", custom: "" },
+  crm:        { all: "", start: "", pro: "", custom: "" },
+  business:   { all: "", start: "", pro: "", custom: "" },
+  automation: { all: "", start: "", pro: "", custom: "" },
+  ai:         { all: "", start: "", pro: "", custom: "" },
+  branding:   { all: "", start: "", pro: "", custom: "" },
+  content:    { all: "", start: "", pro: "", custom: "" }
+};
+
+/** Devuelve el enlace de ejemplo para un servicio (y nivel opcional), o "" si no hay. */
+function exampleFor(service, level){
+  var e = EXAMPLES[service];
+  if (!e) return "";
+  return (level && e[level]) ? e[level] : (e.all || "");
+}
+
 /* ---------- Helper: obtener un plan por servicio+nivel ---------- */
 function getPlan(service, level){
   if (PLANS[service] && PLANS[service].plans[level]){

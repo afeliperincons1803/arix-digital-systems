@@ -212,6 +212,7 @@
 
             <div style="display:grid;gap:.7rem;margin-top:1.4rem;">
               <button class="btn btn-primary btn-block" id="wantPlan">Quiero este proyecto</button>
+              ${exampleFor(d.service, d.level) ? '<a class="btn btn-ghost btn-block" href="' + exampleFor(d.service, d.level) + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>' : ''}
               <a class="btn btn-ghost btn-block" data-wa data-wa-msg="" id="waPlan">Solicitar por WhatsApp</a>
               <a class="btn btn-ghost btn-block" href="index.html#planes">Volver a planes</a>
             </div>
