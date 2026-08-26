@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=7" />
+<link rel="stylesheet" href="assets/css/styles.css?v=8" />
 </head>
 <body>
 
@@ -135,9 +135,14 @@
 
     <!-- Mantenimiento -->
     <div class="solution-block reveal" id="mantenimiento">
-      <div class="sol-head"><h3><span class="sol-name">Soporte y Mantenimiento</span> <span class="pill">CARE</span></h3>
-        <p>El soporte real toma tiempo: revisiones, comunicación, correcciones, respaldos y mejoras. Planes mensuales sostenibles.</p></div>
-      <div class="plans" id="carePlans"></div>
+      <div class="sol-toggle" role="button" tabindex="0" aria-expanded="false">
+        <div class="sol-head"><h3><span class="sol-name">Soporte y Mantenimiento</span> <span class="pill">CARE</span></h3>
+          <p>El soporte real toma tiempo: revisiones, comunicación, correcciones, respaldos y mejoras. Planes mensuales sostenibles.</p>
+          <p class="sol-for"><b>Ideal para:</b> mantener tu proyecto actualizado, seguro y con soporte continuo.</p>
+        </div>
+        <span class="sol-toggle-btn">Ver planes <span class="chev">▾</span></span>
+      </div>
+      <div class="sol-plans-wrap"><div class="plans" id="carePlans"></div></div>
     </div>
 
     <!-- Aviso de precios -->
@@ -387,10 +392,12 @@ const PROJECTS = [
 (function(){
   const wrap = document.getElementById("solutionsWrap");
 
+  var firstService = Object.keys(PLANS)[0];
   Object.keys(PLANS).forEach(function(service){
     const s = PLANS[service];
+    const isOpen = (service === firstService); // primer servicio abierto por defecto
     const block = document.createElement("div");
-    block.className = "solution-block reveal";
+    block.className = "solution-block reveal" + (isOpen ? " open" : "");
 
     let cards = "";
     ["start","pro","custom"].forEach(function(lvl){
@@ -412,11 +419,31 @@ const PROJECTS = [
         '</div>';
     });
 
+    var forWho = s.forWho ? '<p class="sol-for"><b>Ideal para:</b> ' + s.forWho + '</p>' : '';
     block.innerHTML =
-      '<div class="sol-head"><h3><span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3><p>' + s.intro + '</p></div>' +
-      '<div class="plans">' + cards + '</div>';
+      '<div class="sol-toggle" role="button" tabindex="0" aria-expanded="' + (isOpen ? 'true' : 'false') + '">' +
+        '<div class="sol-head">' +
+          '<h3><span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3>' +
+          '<p>' + s.intro + '</p>' + forWho +
+        '</div>' +
+        '<span class="sol-toggle-btn">Ver planes y precios <span class="chev">▾</span></span>' +
+      '</div>' +
+      '<div class="sol-plans-wrap"><div class="plans">' + cards + '</div></div>';
     wrap.appendChild(block);
     if (window.__arixReveal) window.__arixReveal.observe(block);
+  });
+
+  /* Acordeón: activar apertura/cierre de cada servicio (incluye Mantenimiento) */
+  document.querySelectorAll('.sol-toggle').forEach(function(t){
+    function toggle(){
+      var blk = t.closest('.solution-block');
+      var open = blk.classList.toggle('open');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    t.addEventListener('click', toggle);
+    t.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
   });
 
   /* Mantenimiento (CARE_PLANS) */

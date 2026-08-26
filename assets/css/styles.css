@@ -238,9 +238,40 @@ select:focus-visible, textarea:focus-visible{
 .sol-name{ background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:900; letter-spacing:-.01em; }
 .sol-head .pill{ transform:translateY(-1px); }
 .sol-head p{ color:var(--text-dim); max-width:680px; margin-top:.55rem; }
+.sol-for{ color:var(--gray-light); font-size:.88rem; margin-top:.5rem; max-width:680px; }
+.sol-for b{ color:var(--cyan); }
 @media (max-width:560px){
   .sol-head h3{ font-size:1.8rem; }
   .sol-head .pill{ font-size:.66rem; }
+}
+
+/* ---- Acordeón de servicio (optimiza espacio en móvil) ---- */
+.sol-toggle{
+  display:flex; align-items:center; justify-content:space-between; gap:1.2rem;
+  width:100%; cursor:pointer; user-select:none; text-align:left;
+  border-radius:14px; transition:background .2s;
+}
+.sol-toggle:hover{ background:rgba(22,200,229,.03); }
+.sol-toggle:focus-visible{ outline:2px solid var(--cyan); outline-offset:4px; }
+.sol-toggle .sol-head{ margin-bottom:0; flex:1; }
+.sol-toggle-btn{
+  flex:none; display:inline-flex; align-items:center; gap:.5rem;
+  padding:.75rem 1.3rem; border-radius:100px; font-weight:700; font-size:.9rem;
+  background:var(--grad-brand); color:#02121f; white-space:nowrap;
+  box-shadow:0 8px 22px rgba(19,215,122,.28); transition:transform .2s, box-shadow .25s;
+}
+.sol-toggle:hover .sol-toggle-btn{ transform:translateY(-2px); box-shadow:0 12px 30px rgba(22,200,229,.4); }
+.sol-toggle-btn .chev{ font-size:.85rem; transition:transform .35s var(--ease); }
+.solution-block.open .sol-toggle-btn{ background:rgba(255,255,255,.06); color:var(--white); border:1px solid var(--card-border); box-shadow:none; }
+.solution-block.open .sol-toggle-btn .chev{ transform:rotate(180deg); }
+
+.sol-plans-wrap{ max-height:0; overflow:hidden; transition:max-height .5s var(--ease); }
+.solution-block.open .sol-plans-wrap{ max-height:5000px; }
+.sol-plans-wrap .plans{ margin-top:1.5rem; }
+
+@media (max-width:700px){
+  .sol-toggle{ flex-direction:column; align-items:stretch; gap:1rem; }
+  .sol-toggle-btn{ justify-content:center; padding:.85rem 1.3rem; }
 }
 
 .flow{ display:flex; flex-wrap:wrap; align-items:center; gap:.6rem; justify-content:center; margin:1.4rem 0; }
