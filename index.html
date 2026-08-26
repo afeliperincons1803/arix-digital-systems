@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=6" />
+<link rel="stylesheet" href="assets/css/styles.css?v=7" />
 </head>
 <body>
 
@@ -241,22 +241,16 @@
   </div>
 </section>
 
-<!-- ============ PORTAFOLIO (conceptos) ============ -->
-<section class="section-pad">
+<!-- ============ PROYECTOS ARIX (desarrollos reales Custom) ============ -->
+<section class="section-pad" id="proyectos">
   <div class="container">
     <div class="section-head center reveal">
-      <span class="eyebrow">Conceptos ARIX</span>
-      <h2 class="section-title">Lo que podemos <span class="grad-text">construir</span></h2>
-      <p class="section-sub">Ejemplos conceptuales de proyectos que ARIX puede desarrollar.</p>
+      <span class="eyebrow">Proyectos</span>
+      <h2 class="section-title">Lo que hemos <span class="grad-text">construido</span></h2>
+      <p class="section-sub">Desarrollos a medida (Custom) creados por ARIX. Cada uno resolvió necesidades reales de un negocio.</p>
     </div>
-    <div class="portfolio">
-      <div class="port-card reveal"><div class="port-thumb p1"><span>Beauty Store</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>Tienda + reservas para el sector belleza.</p></div></div>
-      <div class="port-card reveal d1"><div class="port-thumb p2"><span>Food Orders</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>Menú, pedidos y domicilios.</p></div></div>
-      <div class="port-card reveal d2"><div class="port-thumb p3"><span>Business Dashboard</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>Panel administrativo empresarial.</p></div></div>
-      <div class="port-card reveal"><div class="port-thumb p4"><span>Fashion Store</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>E-commerce de moda con inventario.</p></div></div>
-      <div class="port-card reveal d1"><div class="port-thumb p5"><span>Booking System</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>Sistema de reservas y citas.</p></div></div>
-      <div class="port-card reveal d2"><div class="port-thumb p6"><span>Corporate Web</span></div><div class="port-body"><span class="pill">Concepto demostrativo</span><p>Sitio corporativo profesional.</p></div></div>
-    </div>
+    <div class="portfolio" id="projectsWrap"></div>
+    <p class="center" style="color:var(--text-dim);font-size:.85rem;margin-top:1.4rem;">¿Quieres una solución así de completa? <a href="cotizar.html" style="color:var(--cyan);">Cotiza tu proyecto Custom</a>.</p>
   </div>
 </section>
 
@@ -345,6 +339,41 @@ const BIZ = {
   comercios:    { t:"Comercios", d:"Digitaliza tu comercio con ventas e inventario.", tags:["Store Start","Inventario","Orders Start","Care Pro"] },
   empresas:     { t:"Empresas", d:"Ecosistema empresarial completo y automatizado.", tags:["Web Custom","CRM Pro","Automation Pro","Business Pro"] }
 };
+
+/* ============================================================
+   PROYECTOS ARIX (desarrollos reales, todos Custom)
+   ------------------------------------------------------------
+   - url:  enlace al proyecto/demo en vivo (deja "" si aún no).
+   - img:  ruta a una captura (ej. "assets/img/proyecto-pos.png").
+           Si hay img, se muestra como portada; si no, un fondo con degradado.
+   Cuando pongas url o img, aparece el botón "Ver ejemplo".
+   ============================================================ */
+const PROJECTS = [
+  {
+    title: "POS de Facturación",
+    tag: "POS · Custom",
+    desc: "Punto de venta con emisión de facturas y control de ventas.",
+    thumb: "p3", url: "", img: ""
+  },
+  {
+    title: "Tienda Virtual",
+    tag: "E-commerce · Custom",
+    desc: "Tienda en línea completa con carrito, catálogo y proceso de compra.",
+    thumb: "p2", url: "", img: ""
+  },
+  {
+    title: "Sistema de Reportes",
+    tag: "Reportes · Custom",
+    desc: "Panel de reportes y estadísticas para tomar mejores decisiones.",
+    thumb: "p6", url: "", img: ""
+  },
+  {
+    title: "Sistema Integral · POS + Inventario + Tienda + Envíos",
+    tag: "Proyecto insignia · Custom",
+    desc: "El más completo: POS con facturación, gestor de inventario, tienda virtual y automatización de envíos que genera la etiqueta lista para pegar en el paquete.",
+    thumb: "p1", url: "", img: "", featured: true
+  }
+];
 </script>
 
 <script src="assets/js/plans.js?v=5"></script>
@@ -422,6 +451,35 @@ const BIZ = {
       document.getElementById("bizPanel").scrollIntoView({ behavior:"smooth", block:"nearest" });
     });
   });
+
+  /* Proyectos ARIX (portafolio real Custom) */
+  var projWrap = document.getElementById("projectsWrap");
+  if (projWrap && typeof PROJECTS !== "undefined"){
+    PROJECTS.forEach(function(pr){
+      var card = document.createElement("div");
+      card.className = "port-card reveal" + (pr.featured ? " port-featured" : "");
+      // Portada: imagen si existe, si no un degradado con el título
+      var thumb = pr.img
+        ? '<div class="port-thumb"><img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></div>'
+        : '<div class="port-thumb ' + (pr.thumb || "p1") + '"><span>' + pr.title + '</span></div>';
+      // Botón: "Ver ejemplo" si hay url o img; si no, "Solicitar demo"
+      var hasDemo = pr.url || pr.img;
+      var btn = pr.url
+        ? '<a class="btn btn-primary btn-sm btn-block" href="' + pr.url + '" target="_blank" rel="noopener" style="margin-top:.7rem;">👁 Ver ejemplo</a>'
+        : (pr.img
+            ? '<a class="btn btn-ghost btn-sm btn-block" href="' + pr.img + '" target="_blank" rel="noopener" style="margin-top:.7rem;">👁 Ver captura</a>'
+            : '<a class="btn btn-ghost btn-sm btn-block" href="contacto.html" style="margin-top:.7rem;">Solicitar demo</a>');
+      card.innerHTML = thumb +
+        '<div class="port-body">' +
+          '<span class="pill">' + pr.tag + '</span>' +
+          '<h4>' + pr.title + '</h4>' +
+          '<p>' + pr.desc + '</p>' +
+          btn +
+        '</div>';
+      projWrap.appendChild(card);
+      if (window.__arixReveal) window.__arixReveal.observe(card);
+    });
+  }
 })();
 </script>
 </body>

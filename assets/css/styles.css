@@ -279,7 +279,14 @@ select:focus-visible, textarea:focus-visible{
 .port-thumb span{ position:relative; z-index:2; text-shadow:0 4px 20px rgba(0,0,0,.4); }
 .port-body{ padding:1.1rem 1.3rem; }
 .port-body .pill{ margin-bottom:.5rem; }
+.port-body h4{ font-size:1.08rem; margin:.15rem 0 .35rem; }
 .port-body p{ color:var(--text-dim); font-size:.88rem; }
+/* Proyecto insignia: ocupa dos columnas en escritorio */
+.port-featured{ grid-column:span 2; border-color:rgba(40,229,127,.4); box-shadow:0 0 0 1px rgba(40,229,127,.2), var(--shadow); }
+.port-featured .port-thumb{ aspect-ratio:21/9; }
+.port-featured .port-thumb span{ font-size:1.5rem; }
+@media (max-width:960px){ .port-featured{ grid-column:span 2; } }
+@media (max-width:560px){ .port-featured{ grid-column:span 1; } .port-featured .port-thumb{ aspect-ratio:16/10; } }
 
 .faq-item{ border:1px solid var(--card-border); border-radius:var(--radius-sm); margin-bottom:.8rem; overflow:hidden; background:var(--card-bg); }
 .faq-q{ width:100%; text-align:left; padding:1.1rem 1.3rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; font-weight:600; font-size:.98rem; }
