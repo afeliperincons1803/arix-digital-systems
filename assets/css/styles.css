@@ -230,10 +230,27 @@ select:focus-visible, textarea:focus-visible{
 .plan-features li::before{ content:"✓"; color:var(--green); font-weight:900; flex:none; }
 .plan .btn{ margin-top:auto; }
 
-.solution-block{ margin-top:2.8rem; padding-top:2rem; border-top:1px solid var(--card-border); }
-.sol-head{ margin-bottom:1.4rem; position:relative; padding-left:16px; }
-/* Barra de acento con degradado de marca a la izquierda del título */
-.sol-head::before{ content:""; position:absolute; left:0; top:.1em; bottom:.35em; width:5px; border-radius:6px; background:var(--grad-brand); box-shadow:0 0 16px rgba(22,200,229,.55); }
+/* ---- Cada servicio es una "hojita": tarjeta sólida que se apila ----
+   Fondo 100% opaco (tapa por completo la tarjeta de atrás) y borde
+   con degradado de marca rodeando todas las esquinas.               */
+.solution-block{
+  position:sticky; top:88px; z-index:1;
+  margin:0 0 1rem; padding:1.5rem 1.6rem;
+  border-radius:22px;
+  background:linear-gradient(160deg,#082742,#04182c);  /* sólido, sin transparencia */
+  box-shadow:0 18px 44px rgba(2,10,22,.55);
+}
+/* Borde degradado en todo el contorno (la "liniecita" rodeando la tarjeta) */
+.solution-block::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1.5px; pointer-events:none;
+  background:var(--grad-brand-r); opacity:.55;
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+}
+.solution-block:hover::before{ opacity:.85; }
+/* Al abrirse deja de estar pegada, para poder recorrer los precios sin cortes */
+.solution-block.open{ position:relative; top:auto; z-index:2; }
+.sol-head{ margin-bottom:1.4rem; position:relative; }
 .sol-head h3{ font-size:clamp(1.7rem,6vw,2.15rem); display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; line-height:1.1; }
 .sol-name{ background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent; font-weight:900; letter-spacing:-.01em; }
 .sol-head .pill{ transform:translateY(-1px); }
@@ -408,14 +425,9 @@ select:focus-visible, textarea:focus-visible{
   .pcar-btn{ width:46px; height:46px; }
 }
 
-/* ---- Planes apilados dentro de cada servicio (hojitas) ---- */
-.plans-stack{ display:block; }
-.plans-stack .stack-item{ min-height:clamp(400px,58vh,560px); top:calc(100px + var(--i,0) * 14px); }
-.plans-stack .plan{ transform-origin:top center; will-change:transform,opacity; box-shadow:0 24px 56px rgba(2,10,22,.55); }
 @media (max-width:560px){
-  .plans-stack .stack-item{ min-height:auto; margin-bottom:.9rem; top:calc(86px + var(--i,0) * 10px); }
+  .solution-block{ top:80px; padding:1.15rem 1.15rem; border-radius:18px; }
 }
-/* El overflow se libera por JS al terminar de abrir (para que el sticky funcione) */
 
 /* ---- Tarjetas de "Más que páginas web": compactas en celular ---- */
 @media (max-width:560px){

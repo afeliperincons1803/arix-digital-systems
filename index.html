@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=15" />
+<link rel="stylesheet" href="assets/css/styles.css?v=16" />
 </head>
 <body>
 
@@ -142,7 +142,7 @@
         </div>
         <span class="sol-toggle-btn">Ver planes <span class="chev">▾</span></span>
       </div>
-      <div class="sol-plans-wrap"><div class="plans-stack" id="carePlans"></div></div>
+      <div class="sol-plans-wrap"><div class="plans" id="carePlans"></div></div>
     </div>
 
     <!-- Aviso de precios -->
@@ -414,15 +414,13 @@ const PROJECTS = [
       var exUrl = exampleFor(service, lvl);
       var exBtn = exUrl ? '<a class="btn btn-ghost btn-block" style="margin-top:.6rem;" href="' + exUrl + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>' : '';
       cards +=
-        '<div class="stack-item" style="--i:' + li + '">' +
-          '<div class="plan' + (featured ? ' featured' : '') + '">' +
-            (featured ? '<span class="plan-tag">' + p.badge + '</span>' : '') +
-            '<h3>' + p.name + '</h3>' +
-            '<div class="price">' + priceTxt + '</div>' +
-            '<ul class="plan-features">' + p.includes.slice(0,8).map(function(i){ return '<li>' + i + '</li>'; }).join("") + '</ul>' +
-            '<a class="' + btnClass + '" href="plan.html?service=' + service + '&plan=' + lvl + '">' + btnLabel + '</a>' +
-            exBtn +
-          '</div>' +
+        '<div class="plan' + (featured ? ' featured' : '') + '">' +
+          (featured ? '<span class="plan-tag">' + p.badge + '</span>' : '') +
+          '<h3>' + p.name + '</h3>' +
+          '<div class="price">' + priceTxt + '</div>' +
+          '<ul class="plan-features">' + p.includes.slice(0,8).map(function(i){ return '<li>' + i + '</li>'; }).join("") + '</ul>' +
+          '<a class="' + btnClass + '" href="plan.html?service=' + service + '&plan=' + lvl + '">' + btnLabel + '</a>' +
+          exBtn +
         '</div>';
     });
 
@@ -437,7 +435,7 @@ const PROJECTS = [
         '</div>' +
         '<span class="sol-toggle-btn">Ver planes y precios <span class="chev">▾</span></span>' +
       '</div>' +
-      '<div class="sol-plans-wrap"><div class="plans-stack">' + cards + '</div></div>';
+      '<div class="sol-plans-wrap"><div class="plans">' + cards + '</div></div>';
     wrap.appendChild(block);
     if (window.__arixReveal) window.__arixReveal.observe(block);
   });
@@ -453,24 +451,21 @@ const PROJECTS = [
     // Deja la altura fija en los que ya empiezan abiertos
     if (blk.classList.contains('open')){
       wrap.style.maxHeight = reduceMo ? 'none' : (wrap.scrollHeight + 'px');
-      wrap.style.overflow = 'visible';
     }
     // Al terminar de abrir: sin límite de altura y sin recorte (necesario para el sticky)
     wrap.addEventListener('transitionend', function(e){
       if (e.propertyName === 'max-height' && blk.classList.contains('open')){
         wrap.style.maxHeight = 'none';
-        wrap.style.overflow = 'visible';
       }
     });
 
     function setOpen(open){
       blk.classList.toggle('open', open);
       t.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (reduceMo){ wrap.style.maxHeight = open ? 'none' : '0px'; wrap.style.overflow = open ? 'visible' : 'hidden'; return; }
+      if (reduceMo){ wrap.style.maxHeight = open ? 'none' : '0px'; return; }
       if (open){
         wrap.style.maxHeight = wrap.scrollHeight + 'px';
       } else {
-        wrap.style.overflow = 'hidden';
         // fija la altura actual y luego colapsa (transición al revés)
         wrap.style.maxHeight = wrap.scrollHeight + 'px';
         void wrap.offsetHeight; // reflow
@@ -490,14 +485,12 @@ const PROJECTS = [
     const priceTxt = (typeof c.price === "number" ? formatCOP(c.price) : c.price);
     const featured = !!c.badge;
     careWrap.innerHTML +=
-      '<div class="stack-item" style="--i:' + ci + '">' +
-        '<div class="plan' + (featured ? ' featured' : '') + '">' +
-          (featured ? '<span class="plan-tag">' + c.badge + '</span>' : '') +
-          '<h3>' + c.name + '</h3>' +
-          '<div class="price">' + priceTxt + ' <small>' + c.per + '</small></div>' +
-          '<ul class="plan-features">' + c.features.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
-          '<a class="' + (featured ? 'btn btn-primary' : 'btn btn-ghost') + ' btn-block" href="contacto.html">Contratar</a>' +
-        '</div>' +
+      '<div class="plan' + (featured ? ' featured' : '') + '">' +
+        (featured ? '<span class="plan-tag">' + c.badge + '</span>' : '') +
+        '<h3>' + c.name + '</h3>' +
+        '<div class="price">' + priceTxt + ' <small>' + c.per + '</small></div>' +
+        '<ul class="plan-features">' + c.features.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
+        '<a class="' + (featured ? 'btn btn-primary' : 'btn btn-ghost') + ' btn-block" href="contacto.html">Contratar</a>' +
       '</div>';
   });
 
@@ -612,37 +605,6 @@ const PROJECTS = [
     pintar();
   }
 
-  /* ============================================================
-     HOJITAS en los planes: al desplegar un servicio, las 3 tarjetas
-     se apilan una sobre otra (móvil y escritorio).
-     ============================================================ */
-  (function(){
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var pendiente = false;
-    function actualizarPila(){
-      var items = document.querySelectorAll('.plans-stack .stack-item');
-      Array.prototype.forEach.call(items, function(it){
-        var card = it.querySelector('.plan');
-        if (!card) return;
-        var rect = it.getBoundingClientRect();
-        if (rect.height < 40){ card.style.transform = ''; card.style.opacity = ''; return; } // acordeón cerrado
-        if (it._st === undefined) it._st = parseFloat(getComputedStyle(it).top) || 0;
-        var recorrido = Math.max(1, rect.height * 0.75);
-        var p = Math.min(1, Math.max(0, (it._st - rect.top) / recorrido));
-        card.style.transform = 'scale(' + (1 - p * 0.06).toFixed(4) + ')';
-        card.style.opacity = (1 - p * 0.4).toFixed(3);
-      });
-      pendiente = false;
-    }
-    window.addEventListener('scroll', function(){
-      if (!pendiente){ pendiente = true; requestAnimationFrame(actualizarPila); }
-    }, { passive:true });
-    window.addEventListener('resize', function(){
-      Array.prototype.forEach.call(document.querySelectorAll('.plans-stack .stack-item'), function(it){ it._st = undefined; });
-      actualizarPila();
-    }, { passive:true });
-    actualizarPila();
-  })();
 })();
 </script>
 </body>
