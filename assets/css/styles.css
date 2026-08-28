@@ -822,11 +822,16 @@ footer{ position:relative; z-index:2; border-top:1px solid var(--card-border); b
   .footer-grid{ grid-template-columns:1fr 1fr; }
   .hamburger{ display:block; }
   .nav-links{
-    position:fixed; inset:0 0 0 auto; width:min(300px,82%); flex-direction:column; align-items:stretch;
-    background:rgba(4,20,38,.97); backdrop-filter:blur(18px); padding:6rem 1.4rem 2rem; gap:.4rem;
-    transform:translateX(110%); transition:transform .4s var(--ease); border-left:1px solid var(--card-border);
+    position:fixed; inset:0; width:100%; flex-direction:column; align-items:stretch; justify-content:center;
+    background:rgba(4,20,38,.88); backdrop-filter:blur(22px) saturate(1.1); -webkit-backdrop-filter:blur(22px) saturate(1.1);
+    padding:5rem 1.6rem 2rem; gap:.4rem; text-align:center;
+    transform:translateY(-8%); opacity:0; visibility:hidden;
+    transition:transform .4s var(--ease), opacity .35s var(--ease), visibility .35s;
+    border:none;
   }
-  .nav-links.open{ transform:none; }
+  .nav-links.open{ transform:none; opacity:1; visibility:visible; }
+  .nav-links a{ font-size:1.15rem; padding:1rem; }
+  .nav-cta{ max-width:280px; margin:.6rem auto 0; }
   .nav-links a{ padding:.9rem 1rem; font-size:1rem; }
   .nav-cta{ margin:.6rem 0 0; }
 }
