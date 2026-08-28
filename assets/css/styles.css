@@ -393,7 +393,7 @@ select:focus-visible, textarea:focus-visible{
              opacity 650ms cubic-bezier(.4,0,.2,1), left 650ms cubic-bezier(.4,0,.2,1);
   will-change:transform,filter,opacity;
 }
-.pcar-item img{ width:100%; height:100%; object-fit:cover; }
+.pcar-item img{ width:100%; height:100%; object-fit:cover; object-position:top center; }
 /* Previsualización en vivo del sitio (iframe escalado como miniatura) */
 .pcar-frame{ position:absolute; inset:0; overflow:hidden; background:#0a1a2e; }
 .pcar-frame iframe{

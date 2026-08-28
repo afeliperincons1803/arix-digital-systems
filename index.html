@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=19" />
+<link rel="stylesheet" href="assets/css/styles.css?v=20" />
 </head>
 <body>
 
@@ -587,9 +587,16 @@ const PROJECTS = [
       document.getElementById('pcarTitle').textContent = pr.title;
       document.getElementById('pcarDesc').textContent = pr.desc;
       var acc = '';
-      if (pr.url) acc += '<a class="btn btn-primary btn-sm" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
-      else if (pr.img) acc += '<a class="btn btn-primary btn-sm" href="' + pr.img + '" target="_blank" rel="noopener">👁 Ver captura</a>';
-      else acc += '<a class="btn btn-primary btn-sm" href="contacto.html">Solicitar demo</a>';
+      if (pr.url){
+        // Proyecto con sitio público: abre el sitio real
+        acc += '<a class="btn btn-primary btn-sm" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
+      } else {
+        // Sistema privado (necesita login): pedir demo por WhatsApp
+        var waMsg = 'Hola ARIX Digital Systems, quisiera ver el ejemplo / solicitar una demo de: ' + pr.title + '.';
+        var waUrl = (typeof waLink === 'function') ? waLink(waMsg) : null;
+        if (waUrl) acc += '<a class="btn btn-primary btn-sm" href="' + waUrl + '" target="_blank" rel="noopener">👁 Solicitar demo</a>';
+        else acc += '<a class="btn btn-primary btn-sm" href="contacto.html">👁 Solicitar demo</a>';
+      }
       acc += '<a class="btn btn-ghost btn-sm" href="cotizar.html">Quiero algo así</a>';
       document.getElementById('pcarActions').innerHTML = acc;
       Array.prototype.forEach.call(pdots.children, function(d, i){ d.classList.toggle('on', i === activo); });
