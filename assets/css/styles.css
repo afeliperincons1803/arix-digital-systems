@@ -384,6 +384,14 @@ select:focus-visible, textarea:focus-visible{
   color:rgba(255,255,255,.07); text-transform:uppercase; white-space:nowrap;
   transition:opacity 650ms cubic-bezier(.4,0,.2,1);
 }
+/* Tablet vertical: el texto fantasma tiende a taparse → súbelo bien arriba */
+@media (min-width:641px) and (max-width:1023px){
+  .pcar-ghost{ top:2%; font-size:clamp(60px,13vw,150px); }
+}
+/* Laptop / tablet horizontal: la tarjeta grande lo tapa → mejor ocultarlo */
+@media (min-width:1024px){
+  .pcar-ghost{ display:none; }
+}
 .pcar-stage{ position:absolute; inset:0; z-index:3; }
 .pcar-item{
   position:absolute; bottom:40%; left:50%; width:min(64%,520px); aspect-ratio:16/10;
