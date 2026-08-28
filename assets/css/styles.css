@@ -369,7 +369,7 @@ select:focus-visible, textarea:focus-visible{
 }
 .pcar-stage{ position:absolute; inset:0; z-index:3; }
 .pcar-item{
-  position:absolute; bottom:31%; left:50%; width:min(58%,430px); aspect-ratio:16/10;
+  position:absolute; bottom:39%; left:50%; width:min(54%,400px); aspect-ratio:16/10;
   border-radius:22px; overflow:hidden; border:1px solid rgba(255,255,255,.18);
   box-shadow:0 26px 60px rgba(2,10,22,.6); display:grid; place-items:center;
   transition:transform 650ms cubic-bezier(.4,0,.2,1), filter 650ms cubic-bezier(.4,0,.2,1),

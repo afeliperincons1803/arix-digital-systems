@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=14" />
+<link rel="stylesheet" href="assets/css/styles.css?v=15" />
 </head>
 <body>
 
@@ -357,24 +357,28 @@ const PROJECTS = [
   {
     title: "POS de Facturación",
     tag: "POS · Custom",
+    ghost: "POS",
     desc: "Punto de venta con emisión de facturas y control de ventas.",
     thumb: "p3", url: "", img: ""
   },
   {
     title: "Dulcemanía · Tienda Virtual",
     tag: "E-commerce · Custom",
+    ghost: "TIENDA",
     desc: "Tienda en línea completa con carrito, catálogo y proceso de compra.",
     thumb: "p2", url: "https://dulcemaniaoficial.com", img: ""
   },
   {
     title: "Sistema de Reportes",
     tag: "Reportes · Custom",
+    ghost: "REPORTES",
     desc: "Centro de mando de ventas por tienda, caja y método de pago, en tiempo real.",
     thumb: "p6", url: "", img: ""
   },
   {
     title: "MAVA · POS + Inventario + Tienda + Envíos",
     tag: "Proyecto insignia · Custom",
+    ghost: "SISTEMA",
     desc: "El más completo: POS con facturación, gestor de inventario, tienda virtual y automatización de envíos que genera la etiqueta lista para pegar en el paquete. Con acceso por roles (admin y trabajador).",
     thumb: "p1", url: "https://mavaviralconcept.com", img: "", featured: true
   }
@@ -570,7 +574,7 @@ const PROJECTS = [
       });
       var pr = PROJECTS[activo];
       pcar.style.background = PCAR_BG[activo % PCAR_BG.length];
-      document.getElementById('pcarGhost').textContent = (pr.tag || 'PROYECTO').split('·')[0].trim();
+      document.getElementById('pcarGhost').textContent = pr.ghost || (pr.tag || 'PROYECTO').split('·')[0].trim();
       document.getElementById('pcarTag').textContent = pr.tag;
       document.getElementById('pcarTitle').textContent = pr.title;
       document.getElementById('pcarDesc').textContent = pr.desc;
