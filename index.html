@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=13" />
+<link rel="stylesheet" href="assets/css/styles.css?v=14" />
 </head>
 <body>
 
@@ -142,7 +142,7 @@
         </div>
         <span class="sol-toggle-btn">Ver planes <span class="chev">▾</span></span>
       </div>
-      <div class="sol-plans-wrap"><div class="plans" id="carePlans"></div></div>
+      <div class="sol-plans-wrap"><div class="plans-stack" id="carePlans"></div></div>
     </div>
 
     <!-- Aviso de precios -->
@@ -254,7 +254,7 @@
       <h2 class="section-title">Lo que hemos <span class="grad-text">construido</span></h2>
       <p class="section-sub">Desarrollos a medida (Custom) creados por ARIX. Cada uno resolvió necesidades reales de un negocio.</p>
     </div>
-    <div class="stack" id="projectsWrap"></div>
+    <div id="projectsWrap"></div>
     <p class="center" style="color:var(--text-dim);font-size:.85rem;margin-top:1.4rem;">¿Quieres una solución así de completa? <a href="cotizar.html" style="color:var(--cyan);">Cotiza tu proyecto Custom</a>.</p>
   </div>
 </section>
@@ -401,7 +401,7 @@ const PROJECTS = [
     block.className = "solution-block reveal" + (isOpen ? " open" : "");
 
     let cards = "";
-    ["start","pro","custom"].forEach(function(lvl){
+    ["start","pro","custom"].forEach(function(lvl, li){
       const p = s.plans[lvl]; if (!p) return;
       const priceTxt = typeof p.price === "number" ? formatCOP(p.price) : p.price;
       const featured = !!p.badge;
@@ -410,13 +410,15 @@ const PROJECTS = [
       var exUrl = exampleFor(service, lvl);
       var exBtn = exUrl ? '<a class="btn btn-ghost btn-block" style="margin-top:.6rem;" href="' + exUrl + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>' : '';
       cards +=
-        '<div class="plan' + (featured ? ' featured' : '') + '">' +
-          (featured ? '<span class="plan-tag">' + p.badge + '</span>' : '') +
-          '<h3>' + p.name + '</h3>' +
-          '<div class="price">' + priceTxt + '</div>' +
-          '<ul class="plan-features">' + p.includes.slice(0,8).map(function(i){ return '<li>' + i + '</li>'; }).join("") + '</ul>' +
-          '<a class="' + btnClass + '" href="plan.html?service=' + service + '&plan=' + lvl + '">' + btnLabel + '</a>' +
-          exBtn +
+        '<div class="stack-item" style="--i:' + li + '">' +
+          '<div class="plan' + (featured ? ' featured' : '') + '">' +
+            (featured ? '<span class="plan-tag">' + p.badge + '</span>' : '') +
+            '<h3>' + p.name + '</h3>' +
+            '<div class="price">' + priceTxt + '</div>' +
+            '<ul class="plan-features">' + p.includes.slice(0,8).map(function(i){ return '<li>' + i + '</li>'; }).join("") + '</ul>' +
+            '<a class="' + btnClass + '" href="plan.html?service=' + service + '&plan=' + lvl + '">' + btnLabel + '</a>' +
+            exBtn +
+          '</div>' +
         '</div>';
     });
 
@@ -431,7 +433,7 @@ const PROJECTS = [
         '</div>' +
         '<span class="sol-toggle-btn">Ver planes y precios <span class="chev">▾</span></span>' +
       '</div>' +
-      '<div class="sol-plans-wrap"><div class="plans">' + cards + '</div></div>';
+      '<div class="sol-plans-wrap"><div class="plans-stack">' + cards + '</div></div>';
     wrap.appendChild(block);
     if (window.__arixReveal) window.__arixReveal.observe(block);
   });
@@ -447,21 +449,24 @@ const PROJECTS = [
     // Deja la altura fija en los que ya empiezan abiertos
     if (blk.classList.contains('open')){
       wrap.style.maxHeight = reduceMo ? 'none' : (wrap.scrollHeight + 'px');
+      wrap.style.overflow = 'visible';
     }
-    // Cuando termina de abrir, quita el límite para que pueda reajustar (responsive)
+    // Al terminar de abrir: sin límite de altura y sin recorte (necesario para el sticky)
     wrap.addEventListener('transitionend', function(e){
       if (e.propertyName === 'max-height' && blk.classList.contains('open')){
         wrap.style.maxHeight = 'none';
+        wrap.style.overflow = 'visible';
       }
     });
 
     function setOpen(open){
       blk.classList.toggle('open', open);
       t.setAttribute('aria-expanded', open ? 'true' : 'false');
-      if (reduceMo){ wrap.style.maxHeight = open ? 'none' : '0px'; return; }
+      if (reduceMo){ wrap.style.maxHeight = open ? 'none' : '0px'; wrap.style.overflow = open ? 'visible' : 'hidden'; return; }
       if (open){
         wrap.style.maxHeight = wrap.scrollHeight + 'px';
       } else {
+        wrap.style.overflow = 'hidden';
         // fija la altura actual y luego colapsa (transición al revés)
         wrap.style.maxHeight = wrap.scrollHeight + 'px';
         void wrap.offsetHeight; // reflow
@@ -477,16 +482,18 @@ const PROJECTS = [
 
   /* Mantenimiento (CARE_PLANS) */
   const careWrap = document.getElementById("carePlans");
-  CARE_PLANS.forEach(function(c){
+  CARE_PLANS.forEach(function(c, ci){
     const priceTxt = (typeof c.price === "number" ? formatCOP(c.price) : c.price);
     const featured = !!c.badge;
     careWrap.innerHTML +=
-      '<div class="plan' + (featured ? ' featured' : '') + '">' +
-        (featured ? '<span class="plan-tag">' + c.badge + '</span>' : '') +
-        '<h3>' + c.name + '</h3>' +
-        '<div class="price">' + priceTxt + ' <small>' + c.per + '</small></div>' +
-        '<ul class="plan-features">' + c.features.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
-        '<a class="' + (featured ? 'btn btn-primary' : 'btn btn-ghost') + ' btn-block" href="contacto.html">Contratar</a>' +
+      '<div class="stack-item" style="--i:' + ci + '">' +
+        '<div class="plan' + (featured ? ' featured' : '') + '">' +
+          (featured ? '<span class="plan-tag">' + c.badge + '</span>' : '') +
+          '<h3>' + c.name + '</h3>' +
+          '<div class="price">' + priceTxt + ' <small>' + c.per + '</small></div>' +
+          '<ul class="plan-features">' + c.features.map(function(f){ return '<li>' + f + '</li>'; }).join("") + '</ul>' +
+          '<a class="' + (featured ? 'btn btn-primary' : 'btn btn-ghost') + ' btn-block" href="contacto.html">Contratar</a>' +
+        '</div>' +
       '</div>';
   });
 
@@ -509,75 +516,129 @@ const PROJECTS = [
   });
 
   /* ============================================================
-     Proyectos ARIX — "hojitas" apiladas con el scroll
-     Cada tarjeta se queda pegada y la siguiente pasa por encima.
+     Proyectos ARIX — CARRUSEL
+     La tarjeta activa se ve grande al centro; las otras quedan
+     pequeñas y difuminadas a los lados. Flechas, puntos y swipe.
      ============================================================ */
   var projWrap = document.getElementById("projectsWrap");
-  if (projWrap && typeof PROJECTS !== "undefined"){
-    PROJECTS.forEach(function(pr, i){
-      var item = document.createElement("div");
-      item.className = "stack-item";
-      item.style.setProperty("--i", i);
+  if (projWrap && typeof PROJECTS !== "undefined" && PROJECTS.length){
+    var PCAR_BG = [
+      'linear-gradient(155deg,#0a2f52,#041426 72%)',
+      'linear-gradient(155deg,#08403a,#041426 72%)',
+      'linear-gradient(155deg,#0b2d63,#041426 72%)',
+      'linear-gradient(155deg,#0d3b52,#041426 72%)'
+    ];
+    var pn = PROJECTS.length, activo = 0, bloqueo = false;
 
-      // Vista previa: imagen real si existe; si no, panel con degradado de marca
-      var preview = pr.img
-        ? '<div class="sc-preview"><img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy"></div>'
-        : '<div class="sc-preview port-thumb ' + (pr.thumb || "p1") + '"><span class="sc-ghost">' + pr.title + '</span></div>';
+    var tarjetas = PROJECTS.map(function(pr, i){
+      var dentro = pr.img
+        ? '<img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy">'
+        : '<span class="pc-name">' + pr.title + '</span>';
+      var extra = pr.img ? '' : ' port-thumb ' + (pr.thumb || 'p1');
+      return '<div class="pcar-item' + extra + '" data-idx="' + i + '">' + dentro + '</div>';
+    }).join('');
 
-      // Acciones según lo disponible
-      var acciones = '';
-      if (pr.url){
-        acciones += '<a class="btn btn-primary" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
-        acciones += '<a class="btn btn-ghost" href="cotizar.html">Quiero algo así</a>';
-      } else if (pr.img){
-        acciones += '<a class="btn btn-primary" href="' + pr.img + '" target="_blank" rel="noopener">👁 Ver captura</a>';
-        acciones += '<a class="btn btn-ghost" href="cotizar.html">Quiero algo así</a>';
-      } else {
-        acciones += '<a class="btn btn-ghost" href="contacto.html">Solicitar demo</a>';
-        acciones += '<a class="btn btn-primary" href="cotizar.html">Quiero algo así</a>';
-      }
-
-      item.innerHTML =
-        '<article class="stack-card' + (pr.featured ? ' is-featured' : '') + '">' +
-          '<div class="sc-top">' +
-            '<span class="sc-num">' + String(i + 1).padStart(2, "0") + '</span>' +
-            '<div class="sc-meta">' +
-              '<span class="pill">' + pr.tag + '</span>' +
-              '<h3 class="sc-title">' + pr.title + '</h3>' +
-              '<p class="sc-desc">' + pr.desc + '</p>' +
-            '</div>' +
+    projWrap.innerHTML =
+      '<div class="pcar" id="pcar">' +
+        '<div class="pcar-ghost" id="pcarGhost">PROYECTOS</div>' +
+        '<div class="pcar-dots" id="pcarDots"></div>' +
+        '<div class="pcar-stage">' + tarjetas + '</div>' +
+        '<div class="pcar-ui">' +
+          '<div class="pcar-info">' +
+            '<span class="pill" id="pcarTag"></span>' +
+            '<h3 id="pcarTitle"></h3>' +
+            '<p id="pcarDesc"></p>' +
+            '<div class="pcar-actions" id="pcarActions"></div>' +
           '</div>' +
-          preview +
-          '<div class="sc-actions">' + acciones + '</div>' +
-        '</article>';
-      projWrap.appendChild(item);
-    });
+          '<div class="pcar-nav">' +
+            '<button class="pcar-btn" id="pcarPrev" aria-label="Proyecto anterior">‹</button>' +
+            '<button class="pcar-btn" id="pcarNext" aria-label="Siguiente proyecto">›</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
 
-    /* Efecto de alejamiento: las tarjetas de atrás se encogen y se atenúan */
-    var stackItems = Array.prototype.slice.call(projWrap.querySelectorAll('.stack-item'));
-    var reduceStack = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduceStack && stackItems.length){
-      var ticking = false;
-      function updateStack(){
-        stackItems.forEach(function(it){
-          var card = it.querySelector('.stack-card');
-          if (!card) return;
-          var stickTop = parseFloat(getComputedStyle(it).top) || 0;
-          var rect = it.getBoundingClientRect();
-          var recorrido = Math.max(1, rect.height * 0.75);
-          var p = Math.min(1, Math.max(0, (stickTop - rect.top) / recorrido));
-          card.style.transform = 'scale(' + (1 - p * 0.07).toFixed(4) + ')';
-          card.style.opacity = (1 - p * 0.42).toFixed(3);
-        });
-        ticking = false;
-      }
-      window.addEventListener('scroll', function(){
-        if (!ticking){ ticking = true; requestAnimationFrame(updateStack); }
-      }, { passive:true });
-      window.addEventListener('resize', updateStack, { passive:true });
-      updateStack();
+    var pcar = document.getElementById('pcar');
+    var pitems = projWrap.querySelectorAll('.pcar-item');
+    var pdots = document.getElementById('pcarDots');
+    PROJECTS.forEach(function(){ pdots.innerHTML += '<span class="pcar-dot"></span>'; });
+
+    function pintar(){
+      var L = (activo + pn - 1) % pn, R = (activo + 1) % pn;
+      Array.prototype.forEach.call(pitems, function(el, i){
+        var rol = i === activo ? 'center' : (i === L ? 'left' : (i === R ? 'right' : 'back'));
+        el.setAttribute('data-role', rol);
+      });
+      var pr = PROJECTS[activo];
+      pcar.style.background = PCAR_BG[activo % PCAR_BG.length];
+      document.getElementById('pcarGhost').textContent = (pr.tag || 'PROYECTO').split('·')[0].trim();
+      document.getElementById('pcarTag').textContent = pr.tag;
+      document.getElementById('pcarTitle').textContent = pr.title;
+      document.getElementById('pcarDesc').textContent = pr.desc;
+      var acc = '';
+      if (pr.url) acc += '<a class="btn btn-primary btn-sm" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
+      else if (pr.img) acc += '<a class="btn btn-primary btn-sm" href="' + pr.img + '" target="_blank" rel="noopener">👁 Ver captura</a>';
+      else acc += '<a class="btn btn-ghost btn-sm" href="contacto.html">Solicitar demo</a>';
+      acc += '<a class="btn btn-ghost btn-sm" href="cotizar.html">Quiero algo así</a>';
+      document.getElementById('pcarActions').innerHTML = acc;
+      Array.prototype.forEach.call(pdots.children, function(d, i){ d.classList.toggle('on', i === activo); });
     }
+    function mover(dir){
+      if (bloqueo) return; bloqueo = true;
+      activo = (activo + (dir === 'next' ? 1 : pn - 1)) % pn;
+      pintar();
+      setTimeout(function(){ bloqueo = false; }, 650);
+    }
+    document.getElementById('pcarNext').addEventListener('click', function(){ mover('next'); });
+    document.getElementById('pcarPrev').addEventListener('click', function(){ mover('prev'); });
+    Array.prototype.forEach.call(pitems, function(el){
+      el.addEventListener('click', function(){
+        var r = el.getAttribute('data-role');
+        if (r === 'left') mover('prev'); else if (r === 'right' || r === 'back') mover('next');
+      });
+    });
+    // Swipe en móvil
+    var sx = null;
+    pcar.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; }, { passive:true });
+    pcar.addEventListener('touchend', function(e){
+      if (sx === null) return;
+      var dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 45) mover(dx < 0 ? 'next' : 'prev');
+      sx = null;
+    }, { passive:true });
+    pintar();
   }
+
+  /* ============================================================
+     HOJITAS en los planes: al desplegar un servicio, las 3 tarjetas
+     se apilan una sobre otra (móvil y escritorio).
+     ============================================================ */
+  (function(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var pendiente = false;
+    function actualizarPila(){
+      var items = document.querySelectorAll('.plans-stack .stack-item');
+      Array.prototype.forEach.call(items, function(it){
+        var card = it.querySelector('.plan');
+        if (!card) return;
+        var rect = it.getBoundingClientRect();
+        if (rect.height < 40){ card.style.transform = ''; card.style.opacity = ''; return; } // acordeón cerrado
+        if (it._st === undefined) it._st = parseFloat(getComputedStyle(it).top) || 0;
+        var recorrido = Math.max(1, rect.height * 0.75);
+        var p = Math.min(1, Math.max(0, (it._st - rect.top) / recorrido));
+        card.style.transform = 'scale(' + (1 - p * 0.06).toFixed(4) + ')';
+        card.style.opacity = (1 - p * 0.4).toFixed(3);
+      });
+      pendiente = false;
+    }
+    window.addEventListener('scroll', function(){
+      if (!pendiente){ pendiente = true; requestAnimationFrame(actualizarPila); }
+    }, { passive:true });
+    window.addEventListener('resize', function(){
+      Array.prototype.forEach.call(document.querySelectorAll('.plans-stack .stack-item'), function(it){ it._st = undefined; });
+      actualizarPila();
+    }, { passive:true });
+    actualizarPila();
+  })();
 })();
 </script>
 </body>
