@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=18" />
+<link rel="stylesheet" href="assets/css/styles.css?v=19" />
 </head>
 <body>
 
@@ -536,14 +536,15 @@ const PROJECTS = [
       var dentro, extra = '';
       if (pr.url){
         // Previsualización EN VIVO del sitio (iframe escalado, no interactivo)
-        dentro = '<div class="pcar-frame"><iframe src="' + pr.url + '" title="Vista previa de ' + pr.title + '" loading="lazy" scrolling="no" referrerpolicy="no-referrer"></iframe></div>' +
-                 '<span class="pcar-live"><span class="dot"></span>EN VIVO</span>';
+        dentro = '<div class="pcar-frame"><iframe src="' + pr.url + '" title="Vista previa de ' + pr.title + '" loading="lazy" scrolling="no" referrerpolicy="no-referrer"></iframe></div>';
       } else if (pr.img){
         dentro = '<img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy">';
       } else {
         dentro = '<span class="pc-name">' + pr.title + '</span>';
         extra = ' port-thumb ' + (pr.thumb || 'p1');
       }
+      // Etiqueta EN VIVO en TODAS las tarjetas
+      dentro += '<span class="pcar-live"><span class="dot"></span>EN VIVO</span>';
       return '<div class="pcar-item' + extra + '" data-idx="' + i + '">' + dentro + '</div>';
     }).join('');
 
@@ -557,11 +558,13 @@ const PROJECTS = [
             '<span class="pill" id="pcarTag"></span>' +
             '<h3 id="pcarTitle"></h3>' +
             '<p id="pcarDesc"></p>' +
-            '<div class="pcar-actions" id="pcarActions"></div>' +
           '</div>' +
-          '<div class="pcar-nav">' +
-            '<button class="pcar-btn" id="pcarPrev" aria-label="Proyecto anterior">‹</button>' +
-            '<button class="pcar-btn" id="pcarNext" aria-label="Siguiente proyecto">›</button>' +
+          '<div class="pcar-foot">' +
+            '<div class="pcar-actions" id="pcarActions"></div>' +
+            '<div class="pcar-nav">' +
+              '<button class="pcar-btn" id="pcarPrev" aria-label="Proyecto anterior">‹</button>' +
+              '<button class="pcar-btn" id="pcarNext" aria-label="Siguiente proyecto">›</button>' +
+            '</div>' +
           '</div>' +
         '</div>' +
       '</div>';
@@ -586,7 +589,7 @@ const PROJECTS = [
       var acc = '';
       if (pr.url) acc += '<a class="btn btn-primary btn-sm" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
       else if (pr.img) acc += '<a class="btn btn-primary btn-sm" href="' + pr.img + '" target="_blank" rel="noopener">👁 Ver captura</a>';
-      else acc += '<a class="btn btn-ghost btn-sm" href="contacto.html">Solicitar demo</a>';
+      else acc += '<a class="btn btn-primary btn-sm" href="contacto.html">Solicitar demo</a>';
       acc += '<a class="btn btn-ghost btn-sm" href="cotizar.html">Quiero algo así</a>';
       document.getElementById('pcarActions').innerHTML = acc;
       Array.prototype.forEach.call(pdots.children, function(d, i){ d.classList.toggle('on', i === activo); });
