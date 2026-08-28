@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=12" />
+<link rel="stylesheet" href="assets/css/styles.css?v=13" />
 </head>
 <body>
 
@@ -254,7 +254,7 @@
       <h2 class="section-title">Lo que hemos <span class="grad-text">construido</span></h2>
       <p class="section-sub">Desarrollos a medida (Custom) creados por ARIX. Cada uno resolvió necesidades reales de un negocio.</p>
     </div>
-    <div class="portfolio" id="projectsWrap"></div>
+    <div class="stack" id="projectsWrap"></div>
     <p class="center" style="color:var(--text-dim);font-size:.85rem;margin-top:1.4rem;">¿Quieres una solución así de completa? <a href="cotizar.html" style="color:var(--cyan);">Cotiza tu proyecto Custom</a>.</p>
   </div>
 </section>
@@ -393,8 +393,9 @@ const PROJECTS = [
   const wrap = document.getElementById("solutionsWrap");
 
   var firstService = Object.keys(PLANS)[0];
-  Object.keys(PLANS).forEach(function(service){
+  Object.keys(PLANS).forEach(function(service, si){
     const s = PLANS[service];
+    const numTxt = String(si + 1).padStart(2, "0");
     const isOpen = (service === firstService); // primer servicio abierto por defecto
     const block = document.createElement("div");
     block.className = "solution-block reveal" + (isOpen ? " open" : "");
@@ -425,7 +426,7 @@ const PROJECTS = [
     block.innerHTML =
       '<div class="sol-toggle" role="button" tabindex="0" aria-expanded="' + (isOpen ? 'true' : 'false') + '">' +
         '<div class="sol-head">' +
-          '<h3><span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3>' +
+          '<h3><span class="sol-num">' + numTxt + '</span> <span class="sol-name">' + s.label + '</span> <span class="pill">' + s.tag + '</span></h3>' +
           '<p>' + s.intro + '</p>' + forWho + chips +
         '</div>' +
         '<span class="sol-toggle-btn">Ver planes y precios <span class="chev">▾</span></span>' +
@@ -507,33 +508,75 @@ const PROJECTS = [
     });
   });
 
-  /* Proyectos ARIX (portafolio real Custom) */
+  /* ============================================================
+     Proyectos ARIX — "hojitas" apiladas con el scroll
+     Cada tarjeta se queda pegada y la siguiente pasa por encima.
+     ============================================================ */
   var projWrap = document.getElementById("projectsWrap");
   if (projWrap && typeof PROJECTS !== "undefined"){
-    PROJECTS.forEach(function(pr){
-      var card = document.createElement("div");
-      card.className = "port-card reveal" + (pr.featured ? " port-featured" : "");
-      // Portada: imagen si existe, si no un degradado con el título
-      var thumb = pr.img
-        ? '<div class="port-thumb"><img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy" style="width:100%;height:100%;object-fit:cover;"></div>'
-        : '<div class="port-thumb ' + (pr.thumb || "p1") + '"><span>' + pr.title + '</span></div>';
-      // Botón: "Ver ejemplo" si hay url o img; si no, "Solicitar demo"
-      var hasDemo = pr.url || pr.img;
-      var btn = pr.url
-        ? '<a class="btn btn-primary btn-sm btn-block" href="' + pr.url + '" target="_blank" rel="noopener" style="margin-top:.7rem;">👁 Ver ejemplo</a>'
-        : (pr.img
-            ? '<a class="btn btn-ghost btn-sm btn-block" href="' + pr.img + '" target="_blank" rel="noopener" style="margin-top:.7rem;">👁 Ver captura</a>'
-            : '<a class="btn btn-ghost btn-sm btn-block" href="contacto.html" style="margin-top:.7rem;">Solicitar demo</a>');
-      card.innerHTML = thumb +
-        '<div class="port-body">' +
-          '<span class="pill">' + pr.tag + '</span>' +
-          '<h4>' + pr.title + '</h4>' +
-          '<p>' + pr.desc + '</p>' +
-          btn +
-        '</div>';
-      projWrap.appendChild(card);
-      if (window.__arixReveal) window.__arixReveal.observe(card);
+    PROJECTS.forEach(function(pr, i){
+      var item = document.createElement("div");
+      item.className = "stack-item";
+      item.style.setProperty("--i", i);
+
+      // Vista previa: imagen real si existe; si no, panel con degradado de marca
+      var preview = pr.img
+        ? '<div class="sc-preview"><img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy"></div>'
+        : '<div class="sc-preview port-thumb ' + (pr.thumb || "p1") + '"><span class="sc-ghost">' + pr.title + '</span></div>';
+
+      // Acciones según lo disponible
+      var acciones = '';
+      if (pr.url){
+        acciones += '<a class="btn btn-primary" href="' + pr.url + '" target="_blank" rel="noopener">👁 Ver ejemplo</a>';
+        acciones += '<a class="btn btn-ghost" href="cotizar.html">Quiero algo así</a>';
+      } else if (pr.img){
+        acciones += '<a class="btn btn-primary" href="' + pr.img + '" target="_blank" rel="noopener">👁 Ver captura</a>';
+        acciones += '<a class="btn btn-ghost" href="cotizar.html">Quiero algo así</a>';
+      } else {
+        acciones += '<a class="btn btn-ghost" href="contacto.html">Solicitar demo</a>';
+        acciones += '<a class="btn btn-primary" href="cotizar.html">Quiero algo así</a>';
+      }
+
+      item.innerHTML =
+        '<article class="stack-card' + (pr.featured ? ' is-featured' : '') + '">' +
+          '<div class="sc-top">' +
+            '<span class="sc-num">' + String(i + 1).padStart(2, "0") + '</span>' +
+            '<div class="sc-meta">' +
+              '<span class="pill">' + pr.tag + '</span>' +
+              '<h3 class="sc-title">' + pr.title + '</h3>' +
+              '<p class="sc-desc">' + pr.desc + '</p>' +
+            '</div>' +
+          '</div>' +
+          preview +
+          '<div class="sc-actions">' + acciones + '</div>' +
+        '</article>';
+      projWrap.appendChild(item);
     });
+
+    /* Efecto de alejamiento: las tarjetas de atrás se encogen y se atenúan */
+    var stackItems = Array.prototype.slice.call(projWrap.querySelectorAll('.stack-item'));
+    var reduceStack = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceStack && stackItems.length){
+      var ticking = false;
+      function updateStack(){
+        stackItems.forEach(function(it){
+          var card = it.querySelector('.stack-card');
+          if (!card) return;
+          var stickTop = parseFloat(getComputedStyle(it).top) || 0;
+          var rect = it.getBoundingClientRect();
+          var recorrido = Math.max(1, rect.height * 0.75);
+          var p = Math.min(1, Math.max(0, (stickTop - rect.top) / recorrido));
+          card.style.transform = 'scale(' + (1 - p * 0.07).toFixed(4) + ')';
+          card.style.opacity = (1 - p * 0.42).toFixed(3);
+        });
+        ticking = false;
+      }
+      window.addEventListener('scroll', function(){
+        if (!ticking){ ticking = true; requestAnimationFrame(updateStack); }
+      }, { passive:true });
+      window.addEventListener('resize', updateStack, { passive:true });
+      updateStack();
+    }
   }
 })();
 </script>

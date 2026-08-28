@@ -313,6 +313,52 @@ select:focus-visible, textarea:focus-visible{
 .port-thumb.p5::before{ background:linear-gradient(135deg,#063A63,#16C8E5); }
 .port-thumb.p6::before{ background:linear-gradient(135deg,#1167D8,#16C8E5); }
 .port-thumb span{ position:relative; z-index:2; text-shadow:0 4px 20px rgba(0,0,0,.4); }
+/* ============================================================
+   HOJITAS — Tarjetas de proyecto apiladas con el scroll
+   (efecto "card stacking": cada tarjeta se pega y la siguiente
+   pasa por encima; las de atrás se alejan y bajan de opacidad)
+   ============================================================ */
+.stack{ position:relative; display:block; }
+.stack-item{ position:sticky; top:calc(96px + var(--i,0) * 14px); min-height:clamp(430px,64vh,620px); }
+.stack-card{
+  border-radius:30px; border:1px solid rgba(22,200,229,.35);
+  background:linear-gradient(158deg, rgba(6,58,99,.78), rgba(4,20,38,.97));
+  box-shadow:0 26px 60px rgba(2,10,22,.62);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  padding:1.5rem; transform-origin:top center; will-change:transform,opacity;
+  overflow:hidden;
+}
+.stack-card.is-featured{ border-color:rgba(40,229,127,.55); box-shadow:0 0 0 1px rgba(40,229,127,.22), 0 26px 60px rgba(2,10,22,.62); }
+.sc-top{ display:flex; align-items:flex-start; gap:1.1rem; }
+.sc-num{
+  font-size:clamp(2.4rem,9vw,4.6rem); font-weight:900; line-height:.85; flex:none;
+  background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 22px rgba(22,200,229,.28));
+}
+.sc-meta{ min-width:0; }
+.sc-title{ font-size:clamp(1.15rem,4.2vw,1.9rem); line-height:1.15; margin:.35rem 0 .3rem; }
+.sc-desc{ color:var(--text-dim); font-size:.9rem; line-height:1.5; }
+.sc-preview{
+  margin-top:1.1rem; border-radius:22px; overflow:hidden; position:relative;
+  aspect-ratio:16/9; display:grid; place-items:center; border:1px solid var(--card-border);
+}
+.sc-preview img{ width:100%; height:100%; object-fit:cover; }
+.sc-preview .sc-ghost{ font-weight:900; font-size:clamp(1rem,3.4vw,1.6rem); color:#fff; text-shadow:0 4px 22px rgba(0,0,0,.45); position:relative; z-index:2; padding:0 1rem; text-align:center; }
+.sc-actions{ display:flex; gap:.6rem; margin-top:1.1rem; flex-wrap:wrap; }
+.sc-actions .btn{ flex:1 1 160px; }
+@media (max-width:560px){
+  .stack-item{ top:calc(84px + var(--i,0) * 10px); min-height:auto; margin-bottom:1rem; }
+  .stack-card{ padding:1.15rem; border-radius:24px; }
+  .sc-preview{ aspect-ratio:16/10; }
+}
+
+/* Número grande en el encabezado de cada servicio (estilo lista numerada) */
+.sol-num{
+  font-family:"Consolas",monospace; font-size:clamp(1.5rem,5vw,2.4rem); font-weight:900; line-height:1;
+  background:var(--grad-text); -webkit-background-clip:text; background-clip:text; color:transparent;
+  opacity:.85; margin-right:.15rem;
+}
+
 .port-body{ padding:1.1rem 1.3rem; }
 .port-body .pill{ margin-bottom:.5rem; }
 .port-body h4{ font-size:1.08rem; margin:.15rem 0 .35rem; }
