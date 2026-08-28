@@ -831,7 +831,7 @@ footer{ position:relative; z-index:2; border-top:1px solid var(--card-border); b
   }
   .nav-links.open{ transform:none; opacity:1; visibility:visible; }
   .nav-links a{ font-size:1.15rem; padding:1rem; }
-  .nav-cta{ max-width:280px; margin:.6rem auto 0; }
+  .nav-cta{ max-width:280px; margin:.6rem auto 0; align-self:center; }
   .nav-links a{ padding:.9rem 1rem; font-size:1rem; }
   .nav-cta{ margin:.6rem 0 0; }
 }
