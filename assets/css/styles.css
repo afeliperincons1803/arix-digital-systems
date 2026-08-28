@@ -825,17 +825,20 @@ footer{ position:relative; z-index:2; border-top:1px solid var(--card-border); b
      se descoloque al hacer scroll (un ancestro con filtro rompe position:fixed). */
   .nav.scrolled{ backdrop-filter:none; -webkit-backdrop-filter:none; background:rgba(4,20,38,.9); }
 
-  /* Menú tipo "burbuja" lateral, translúcido (se ve lo de atrás), tinte verde muy suave */
+  /* Menú "burbuja": recuadro redondeado que sale bajo el botón ☰, del alto de
+     su contenido, separado del borde derecho, translúcido con verde muy suave. */
   .nav-links{
-    position:fixed; inset:0 0 0 auto; width:min(270px,78%); flex-direction:column; align-items:stretch;
-    background:rgba(40,229,127,.06); backdrop-filter:blur(20px) saturate(1.2); -webkit-backdrop-filter:blur(20px) saturate(1.2);
-    border-left:1px solid rgba(40,229,127,.28); box-shadow:-24px 0 60px rgba(0,0,0,.4);
-    padding:5.5rem 1.2rem 2rem; gap:.35rem; text-align:left;
-    transform:translateX(110%); transition:transform .4s var(--ease);
+    position:fixed; top:62px; right:14px; left:auto; bottom:auto; width:min(238px,72vw);
+    flex-direction:column; align-items:stretch;
+    background:rgba(40,229,127,.07); backdrop-filter:blur(20px) saturate(1.2); -webkit-backdrop-filter:blur(20px) saturate(1.2);
+    border:1px solid rgba(40,229,127,.30); border-radius:18px; box-shadow:0 22px 50px rgba(0,0,0,.45);
+    padding:.55rem; gap:.12rem; text-align:left;
+    transform-origin:top right; transform:scale(.86) translateY(-8px); opacity:0; visibility:hidden;
+    transition:transform .3s var(--ease), opacity .25s var(--ease), visibility .3s;
   }
-  .nav-links.open{ transform:none; }
-  .nav-links a{ font-size:1.02rem; padding:.85rem 1rem; }
-  .nav-cta{ margin-top:.6rem; }
+  .nav-links.open{ transform:none; opacity:1; visibility:visible; }
+  .nav-links a{ font-size:1rem; padding:.7rem .9rem; border-radius:10px; }
+  .nav-cta{ margin-top:.4rem; }
   .nav-links a{ padding:.9rem 1rem; font-size:1rem; }
   .nav-cta{ margin:.6rem 0 0; }
 }
