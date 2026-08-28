@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=20" />
+<link rel="stylesheet" href="assets/css/styles.css?v=21" />
 </head>
 <body>
 
@@ -359,7 +359,7 @@ const PROJECTS = [
     tag: "POS · Custom",
     ghost: "POS",
     desc: "Punto de venta con emisión de facturas y control de ventas.",
-    thumb: "p3", url: "", img: ""
+    thumb: "p3", url: "", img: "assets/img/proyecto-pos.png"
   },
   {
     title: "Dulcemanía · Tienda Virtual",
@@ -373,7 +373,7 @@ const PROJECTS = [
     tag: "Reportes · Custom",
     ghost: "REPORTES",
     desc: "Centro de mando de ventas por tienda, caja y método de pago, en tiempo real.",
-    thumb: "p6", url: "", img: ""
+    thumb: "p6", url: "", img: "assets/img/proyecto-reportes.png"
   },
   {
     title: "MAVA · POS + Inventario + Tienda + Envíos",
@@ -538,7 +538,8 @@ const PROJECTS = [
         // Previsualización EN VIVO del sitio (iframe escalado, no interactivo)
         dentro = '<div class="pcar-frame"><iframe src="' + pr.url + '" title="Vista previa de ' + pr.title + '" loading="lazy" scrolling="no" referrerpolicy="no-referrer"></iframe></div>';
       } else if (pr.img){
-        dentro = '<img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy">';
+        // Muestra la captura; si aún no existe el archivo, cae al panel de degradado
+        dentro = '<img class="pc-shot" src="' + pr.img + '" alt="' + pr.title + '" loading="lazy" data-name="' + pr.title + '" data-thumb="' + (pr.thumb || 'p1') + '">';
       } else {
         dentro = '<span class="pc-name">' + pr.title + '</span>';
         extra = ' port-thumb ' + (pr.thumb || 'p1');
@@ -572,6 +573,18 @@ const PROJECTS = [
     var pcar = document.getElementById('pcar');
     var pitems = projWrap.querySelectorAll('.pcar-item');
     var pdots = document.getElementById('pcarDots');
+
+    // Respaldo: si una captura aún no existe, mostrar el panel de degradado + nombre
+    projWrap.querySelectorAll('img.pc-shot').forEach(function(img){
+      img.addEventListener('error', function(){
+        var item = img.closest('.pcar-item');
+        item.classList.add('port-thumb', img.getAttribute('data-thumb') || 'p1');
+        var name = img.getAttribute('data-name') || '';
+        img.remove();
+        var span = document.createElement('span'); span.className = 'pc-name'; span.textContent = name;
+        item.insertBefore(span, item.firstChild);
+      });
+    });
     PROJECTS.forEach(function(){ pdots.innerHTML += '<span class="pcar-dot"></span>'; });
 
     function pintar(){
