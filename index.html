@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=17" />
+<link rel="stylesheet" href="assets/css/styles.css?v=18" />
 </head>
 <body>
 
@@ -533,10 +533,17 @@ const PROJECTS = [
     var pn = PROJECTS.length, activo = 0, bloqueo = false;
 
     var tarjetas = PROJECTS.map(function(pr, i){
-      var dentro = pr.img
-        ? '<img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy">'
-        : '<span class="pc-name">' + pr.title + '</span>';
-      var extra = pr.img ? '' : ' port-thumb ' + (pr.thumb || 'p1');
+      var dentro, extra = '';
+      if (pr.url){
+        // Previsualización EN VIVO del sitio (iframe escalado, no interactivo)
+        dentro = '<div class="pcar-frame"><iframe src="' + pr.url + '" title="Vista previa de ' + pr.title + '" loading="lazy" scrolling="no" referrerpolicy="no-referrer"></iframe></div>' +
+                 '<span class="pcar-live"><span class="dot"></span>EN VIVO</span>';
+      } else if (pr.img){
+        dentro = '<img src="' + pr.img + '" alt="' + pr.title + '" loading="lazy">';
+      } else {
+        dentro = '<span class="pc-name">' + pr.title + '</span>';
+        extra = ' port-thumb ' + (pr.thumb || 'p1');
+      }
       return '<div class="pcar-item' + extra + '" data-idx="' + i + '">' + dentro + '</div>';
     }).join('');
 
