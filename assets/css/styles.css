@@ -300,7 +300,7 @@ select:focus-visible, textarea:focus-visible{
 .flow-step{ padding:.6rem 1rem; border-radius:100px; border:1px solid var(--card-border); background:rgba(22,200,229,.06); font-size:.85rem; font-weight:600; white-space:nowrap; }
 .flow-arrow{ color:var(--cyan); font-weight:900; }
 
-.notice{ padding:1.8rem; border-radius:var(--radius); border:1px solid var(--card-border); background:linear-gradient(135deg,rgba(17,103,216,.1),rgba(19,215,122,.06)); backdrop-filter:blur(var(--glass-blur)); }
+.notice{ position:relative; z-index:3; padding:1.8rem; border-radius:var(--radius); border:1px solid var(--card-border); background:linear-gradient(135deg,rgba(17,103,216,.1),rgba(19,215,122,.06)); backdrop-filter:blur(var(--glass-blur)); }
 .notice h3{ font-size:1.3rem; margin-bottom:.6rem; }
 .notice ul{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:.4rem .8rem; margin:.8rem 0; }
 .notice li{ font-size:.86rem; color:var(--text-dim); display:flex; gap:.4rem; }

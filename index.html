@@ -23,7 +23,7 @@
 <!-- Favicon (reemplaza por tu .ico/.png cuando quieras) -->
 <link rel="icon" href="assets/img/logo-arix.png" />
 
-<link rel="stylesheet" href="assets/css/styles.css?v=16" />
+<link rel="stylesheet" href="assets/css/styles.css?v=17" />
 </head>
 <body>
 
@@ -439,6 +439,11 @@ const PROJECTS = [
     wrap.appendChild(block);
     if (window.__arixReveal) window.__arixReveal.observe(block);
   });
+
+  /* Mantenimiento pasa a ser el último bloque DENTRO del mismo contenedor,
+     para que se apile sobre el servicio 12 y suelte antes del aviso de precios. */
+  var careBlock = document.getElementById("mantenimiento");
+  if (careBlock && wrap) wrap.appendChild(careBlock);
 
   /* Acordeón: apertura/cierre suave animando la altura real (scrollHeight).
      Incluye el bloque de Mantenimiento. Respeta prefers-reduced-motion. */
