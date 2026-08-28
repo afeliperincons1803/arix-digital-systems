@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Cambia esta URL por tu dominio final cuando lo tengas
-Sitemap: https://arix-digital.netlify.app/sitemap.xml
+Sitemap: https://afeliperincons1803.github.io/arix-digital-systems/sitemap.xml
