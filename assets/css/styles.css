@@ -695,6 +695,13 @@ select:focus-visible, textarea:focus-visible{
 .links-social-labeled .social-lbl svg{ width:20px; height:20px; flex:none; }
 .links-social-labeled .social-lbl .sl-arrow{ margin-left:auto; opacity:.5; font-size:.9rem; }
 .links-social-labeled .social-lbl:hover{ transform:translateY(-2px); }
+
+/* Botón de WhatsApp en el link-in-bio: acento verde para que resalte */
+.link-btn.link-wa{ border-color:rgba(37,211,102,.45); background:rgba(37,211,102,.07); }
+.link-btn.link-wa .li-icon{ color:#25D366; }
+.link-btn.link-wa:hover{ border-color:#25D366; background:rgba(37,211,102,.16); box-shadow:0 8px 26px rgba(37,211,102,.3); }
+/* Un poco más de aire antes de las redes */
+.link-social-row{ margin-bottom:.4rem; }
 .divider-mini{ display:flex; align-items:center; gap:.7rem; margin:1.4rem 0 .4rem; color:var(--text-dim); font-family:"Consolas",monospace; font-size:.66rem; letter-spacing:.2em; }
 .divider-mini::before, .divider-mini::after{ content:""; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--card-border),transparent); }
 @media (max-width:400px){
